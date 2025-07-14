@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { IUser } from '../types';
 
 export interface IUserDocument extends IUser, Document {
+    _id :mongoose.Types.ObjectId;
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 

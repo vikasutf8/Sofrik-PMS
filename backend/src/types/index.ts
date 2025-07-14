@@ -3,7 +3,7 @@ import { JwtPayload } from 'jsonwebtoken';
 
 // User types
 export interface IUser {
-  _id: string;
+//   _id: string;
   email: string;
   password: string;
   createdAt: Date;
@@ -24,7 +24,7 @@ export interface IUserResponse {
 
 // Project types
 export interface IProject {
-  _id: string;
+//   _id: string;
   title: string;
   description: string;
   status: 'active' | 'completed';
@@ -41,7 +41,7 @@ export interface IProjectInput {
 
 // Task types
 export interface ITask {
-  _id: string;
+//   _id: string;
   title: string;
   description: string;
   status: 'todo' | 'in-progress' | 'done';
@@ -75,8 +75,8 @@ export interface IJwtPayload extends JwtPayload {
 export interface IApiResponse<T = any> {
   success: boolean;
   message: string;
-  data?: T;
-  error?: string;
+  data?: T | undefined;
+  error?: string | undefined;
 }
 
 export interface IPaginatedResponse<T = any> {

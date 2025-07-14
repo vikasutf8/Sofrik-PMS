@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { IProject } from '../types';
 
-export interface IProjectDocument extends IProject, Document {}
+export interface IProjectDocument extends  Document, IProject {}
 
 const ProjectSchema: Schema = new Schema({
   title: {
