@@ -1,6 +1,18 @@
 # Microservices Uber Clone
 
+# Middlware Documentation
 
+## Authentication Middleware
+This middleware checks if the user is authenticated and if not, it returns a 401 Unauthorized response.
+
+- cookies
+  - req.cookies.token  [app.use(cookieParser())]
+  - on login, set the token in the cookie
+  ```res.cookie("token", token, {maxAge: 60*60*24*30, httpOnly: true});```
+- headers
+  - req.headers.authorization.split('')[1] 
+    - split('')[1] to remove the "Bearer " prefix from the token for exmaple
+     ```Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZTE1ZDI0MDc5MDQ0MjI3ZTc1MDA0IiwiaWF0IjoxNjE4NjQ5Njk5fQ.3-9-4-3-9-4-3-9-4-3-9-4-3-9-4-3-9-4-3-9-4-3-9-4-3-9-4-3-9-4-3-9-4-3```
 
 # User API Documentation
 
