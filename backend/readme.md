@@ -14,95 +14,162 @@ This middleware checks if the user is authenticated and if not, it returns a 401
     - split('')[1] to remove the "Bearer " prefix from the token for exmaple
      ```Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZTE1ZDI0MDc5MDQ0MjI3ZTc1MDA0IiwiaWF0IjoxNjE4NjQ5Njk5fQ.3-9-4-3-9-4-3-9-4-3-9-4-3-9-4-3-9-4-3-9-4-3-9-4-3-9-4-3-9-4-3-9-4-3```
 
-# User API Documentation
+# Uber Clone API Documentation
 
-## Base URL
-http://localhost:3333/api/v1/users
+## Base URLs
+- Users API: `/api/v1/users`
+- Riders API: `/api/v1/riders`
 
-## Endpoints
+## Authentication
+All authenticated endpoints require a JWT token. Token can be provided in two ways:
+1. Authorization header: `Authorization: Bearer <token>`
+2. HTTP-only cookie (automatically handled by the browser)
 
-### Register User
-Create a new user account.
+## Common Features
+- JWT-based authentication
+- Token blacklisting for logout
+- Password hashing with bcrypt
+- Input validation with express-validator
+- Real-time support with Socket.IO
 
-**Endpoint:** `POST /register`
+## User API Endpoints
+
+### 1. Register User
+**Endpoint:** `POST /users/register`
 
 **Request Body:**
 ```javascript
 {
   "fullname": {
-    "firstName": "John",    // Required, min 3 characters
-    "lastName": "Doe"      // Optional, min 3 characters if provided
+    "firstName": "string",  // Required, min 3 chars
+    "lastName": "string"   // Optional, min 3 chars
   },
-  "email": "john@example.com",  // Required, must be valid email
-  "password": "password123"    // Required, min 6 characters
+  "email": "string",      // Required, valid email
+  "password": "string"    // Required, min 6 chars
 }
 ```
 
-**Validation Rules:**
+### 2. Login User
+**Endpoint:** `POST /users/login`
+
+**Request Body:**
 ```javascript
 {
-  "fullname.firstName": {
-    "required": true,
-    "minLength": 3,
-    "message": "Name must be at least 3 characters long"
+  "email": "string",    // Required, valid email
+  "password": "string"  // Required, min 6 chars
+}
+```
+
+### 3. Get User Profile
+**Endpoint:** `GET /users/profile`
+**Auth Required:** Yes
+
+### 4. Logout User
+**Endpoint:** `GET /users/logout`
+**Auth Required:** Yes
+
+## Rider API Endpoints
+
+### 1. Register Rider
+**Endpoint:** `POST /riders/register`
+
+**Request Body:**
+```javascript
+{
+  "fullname": {
+    "firstName": "string",  // Required, min 3 chars
+    "lastName": "string"   // Optional, min 3 chars
   },
-  "fullname.lastName": {
-    "required": false,
-    "minLength": 3,
-    "message": "Name must be at least 3 characters long"
-  },
-  "email": {
-    "required": true,
-    "format": "email",
-    "unique": true,
-    "message": "Invalid email"
-  },
-  "password": {
-    "required": true,
-    "minLength": 6,
-    "message": "Password must be at least 6 characters long"
+  "email": "string",      // Required, valid email
+  "password": "string",   // Required, min 6 chars
+  "vehicle": {
+    "color": "string",    // Required, min 3 chars
+    "plate": "string",    // Required, min 6 chars
+    "capacity": number,    // Required, min 1
+    "vehicleType": "string" // Required: "car"|"motorcycle"|"auto"
   }
 }
 ```
 
+**Validation Rules:**
+- `fullname.firstName`: Minimum 3 characters
+- `email`: Valid email format, unique in database
+- `password`: Minimum 6 characters
+- `vehicle.color`: Minimum 3 characters
+- `vehicle.plate`: Minimum 6 characters
+- `vehicle.capacity`: Minimum 1
+- `vehicle.vehicleType`: Must be one of: ["car", "motorcycle", "auto"]
+
 **Success Response (201 Created):**
 ```javascript
 {
-  "user": {
+  "rider": {
     "fullname": {
-      "firstname": "John",
-      "lastname": "Doe"
+      "firstname": "string",
+      "lastname": "string"
     },
-    "email": "john@example.com",
-    "socketId": null,
-    "createdAt": "2024-01-20T12:00:00.000Z",
-    "updatedAt": "2024-01-20T12:00:00.000Z"
+    "email": "string",
+    "vehicle": {
+      "color": "string",
+      "plate": "string",
+      "capacity": number,
+      "vehicleType": "string"
+    },
+    "status": "Inactive",  // or "Active"
+    "location": {
+      "lat": number,
+      "lng": number
+    },
+    "socketId": "string",
+    "createdAt": "timestamp",
+    "updatedAt": "timestamp"
   },
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "token": "JWT_TOKEN"
 }
 ```
 
-**Error Response (400 Bad Request):**
+### 2. Login Rider
+**Endpoint:** `POST /riders/login`
+
+**Request Body:**
+```javascript
+{
+  "email": "string",    // Required, valid email
+  "password": "string"  // Required, min 6 chars
+}
+```
+
+### 3. Get Rider Profile
+**Endpoint:** `GET /riders/profile`
+**Auth Required:** Yes
+
+### 4. Logout Rider
+**Endpoint:** `GET /riders/logout`
+**Auth Required:** Yes
+
+## Error Responses
+
+### Validation Error (400 Bad Request):
 ```javascript
 {
   "errors": [
     {
-      "msg": "Name must be at least 3 characters long",
-      "param": "fullname.firstName",
+      "msg": "Error message",
+      "param": "field_name",
       "location": "body"
     }
   ]
 }
 ```
 
-## Security Features
-- Password hashing using bcrypt
-- JWT-based authentication
-- Email uniqueness validation
-- Input validation using express-validator
-- Socket ID tracking for real-time features
+### Authentication Error (401 Unauthorized):
+```javascript
+{
+  "message": "Unauthorized"
+}
+```
 
-## Data Model
+## Data Models
 
 ### User Schema
 ```javascript
@@ -118,34 +185,56 @@ Create a new user account.
 }
 ```
 
-
-### Login User
-Login a user with email and password.
-
-**Endpoint:** `POST /login`
-
-**Request Body:**
+### Rider Schema
 ```javascript
 {
-  "email": "john@example.com",  // Required, must be valid email
-  "password": "password123"    // Required, min 6 characters
+  fullname: {
+    firstname: String,  // Required, min length 3
+    lastname: String    // Optional, min length 3
+  },
+  email: String,        // Required, unique
+  password: String,     // Required, hashed
+  socketId: String,     // Optional
+  status: String,       // Enum: ["Active", "Inactive"]
+  vehicle: {
+    color: String,      // Required, min length 3
+    plate: String,      // Required, min length 6
+    capacity: Number,   // Required, min 1
+    vehicleType: String // Enum: ["car", "motorcycle", "auto"]
+  },
+  location: {
+    lat: Number,       // Optional
+    lng: Number        // Optional
+  },
+  timestamps: true      // Adds createdAt and updatedAt
 }
 ```
 
-**Success Response (200 OK):**
+### Blacklist Schema
 ```javascript
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "user": {
-    "fullname": {
-      "firstname": "John",
-      "lastname": "Doe"
-    },
-    "email": "john@example.com",
-    "socketId": null,
-    "createdAt": "2024-01-20T12:00:00.000Z",
-    "updatedAt": "2024-01-20T12:00:00.000Z"
-  }
+  token: String,        // Required, unique
+  createdAt: Date       // Auto-expires after 24 hours
 }
 ```
 
+## Authentication Middleware
+
+### User Authentication
+- Validates JWT token from Authorization header or cookie
+- Checks token against blacklist
+- Verifies token signature
+- Attaches user object to request
+
+### Rider Authentication
+- Similar to user authentication
+- Specifically validates rider tokens
+- Attaches rider object to request
+
+## Security Features
+- Password hashing with bcrypt
+- JWT token expiration (1 day)
+- Token blacklisting
+- HTTP-only cookies
+- Input validation
+- Email uniqueness validation

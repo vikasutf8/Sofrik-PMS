@@ -11,6 +11,13 @@ const registerUser = async (req, res,next) => {
     console.log(req.body);
 
     const {fullname, email, password} = req.body;
+
+    const isUserExist = await userModel.findOne({email});
+    if(isUserExist) {
+        return res.status(400).json({message: "User already Exist with this email"});
+    }
+
+
     const hashPassword = await userService.hashPassword(password);
 
     const user = await userService.createUser({firstName: fullname.firstName, lastName: fullname.lastName, email, password: hashPassword});

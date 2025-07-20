@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const userRoute = require("../routes/user.route.js");
+const riderRoute = require("../routes/rider.route.js");
 const cookieParser = require("cookie-parser");
 const app = express();
 
@@ -15,5 +16,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/users",userRoute);
+app.use("/api/v1/riders",riderRoute);
 
 module.exports = app;
