@@ -6,7 +6,7 @@ const { riderAuthMiddleware } = require("../middlewares/auth.middlware");
 
 
 router.post("/register", [
-    body("fullName.firstName").isLength({min:3}).withMessage("Name must be at least 3 characters long"),
+    body("fullname.firstname").isLength({min:3}).withMessage("Name must be at least 3 characters long"),
     body("email").isEmail().withMessage("Invalid email"),
     body("password").isLength({min:6}).withMessage("Password must be at least 6 characters long"),
     body("vehicle.color").isLength({min:3}).withMessage("Color must be at least 3 characters long"),

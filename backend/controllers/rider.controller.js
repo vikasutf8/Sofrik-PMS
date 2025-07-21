@@ -17,7 +17,7 @@ const registerRider = async (req, res,next) => {
 
     const hashPassword = await riderService.hashPassword(password);
 
-    const rider = await riderService.createRider({firstName: fullname.firstName, lastName: fullname.lastName, email, password: hashPassword, color: vehicle.color, plate: vehicle.plate, capacity: vehicle.capacity, vehicleType: vehicle.vehicleType});
+    const rider = await riderService.createRider({firstName: fullname.firstname, lastName: fullname.lastname, email, password: hashPassword, color: vehicle.color, plate: vehicle.plate, capacity: vehicle.capacity, vehicleType: vehicle.vehicleType});
 
     const token = rider.generateAuthToken();
 

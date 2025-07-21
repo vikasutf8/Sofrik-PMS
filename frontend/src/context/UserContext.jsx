@@ -6,12 +6,11 @@ export const userDateContext =createContext();
 const UserContext = ({ children }) => {
 
     const [userData, setUserData] = useState({
-        fullNmme:{
-            firstName:'',
-            lastName:''
+        fullname:{
+            firstname:'',
+            lastname:''
         },
-        email:'',
-
+        email:''
     })
 
 

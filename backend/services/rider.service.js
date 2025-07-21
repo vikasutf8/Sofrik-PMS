@@ -10,7 +10,7 @@
 
     const rider= await riderModel.create({
         fullname:{
-            firstname, lastname
+            firstname: firstName, lastname: lastName
         },
         email,
         password,

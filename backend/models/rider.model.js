@@ -80,12 +80,12 @@ riderSchema.methods.generateAuthToken = function () {
     return token;
 };
 
-riderModel.methods.comparePassword = async function (password) {
+riderSchema.methods.comparePassword = async function (password) {
     const isMatch = await bcrypt.compare(password, this.password);
     return isMatch;
 };
 
-riderModel.statics.hashPassword = async function (password) {
+riderSchema.statics.hashPassword = async function (password) {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     return hashedPassword;

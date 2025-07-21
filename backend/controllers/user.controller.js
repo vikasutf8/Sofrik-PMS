@@ -8,20 +8,19 @@ const registerUser = async (req, res,next) => {
     if(!errors.isEmpty()) {
         return res.status(400).json({errors: errors.array()});
     }
-    console.log(req.body);
 
     const {fullname, email, password} = req.body;
-
+    
     const isUserExist = await userModel.findOne({email});
     if(isUserExist) {
         return res.status(400).json({message: "User already Exist with this email"});
     }
 
 
-    const hashPassword = await userService.hashPassword(password);
+    const hashPassword = await userModel.hashPassword(password);
 
-    const user = await userService.createUser({firstName: fullname.firstName, lastName: fullname.lastName, email, password: hashPassword});
-
+    const user = await userService.createUser({firstname: fullname.firstname, lastname: fullname.lastname, email, password: hashPassword});
+    
     const token = user.generateAuthToken();
 
     res.status(201).json({user, token});
@@ -41,7 +40,7 @@ const loginUser = async (req, res,next) => {
         return res.status(400).json({message: "User not Exist ! Please register first"});
     }
 
-    const isPasswordValid = await userService.comparePassword(password, user.password);
+    const isPasswordValid = await userModel.comparePassword(password, user.password);
     if(!isPasswordValid) {
         return res.status(400).json({message: "Wrong password!!!"});
     }
