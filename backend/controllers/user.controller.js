@@ -40,7 +40,7 @@ const loginUser = async (req, res,next) => {
         return res.status(400).json({message: "User not Exist ! Please register first"});
     }
 
-    const isPasswordValid = await userModel.comparePassword(password, user.password);
+    const isPasswordValid = await user.comparePassword(password, user.password);
     if(!isPasswordValid) {
         return res.status(400).json({message: "Wrong password!!!"});
     }

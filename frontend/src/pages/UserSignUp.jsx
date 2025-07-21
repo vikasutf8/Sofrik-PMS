@@ -9,7 +9,7 @@ const UserSignUp = () => {
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('') 
     const [password, setPassword] = useState('')
-    const [userData, setUserData] = useContext(userDateContext)
+    const {userData, setUserData} = useContext(userDateContext)
 
     const nagivation = useNavigate()
 
@@ -29,10 +29,9 @@ const UserSignUp = () => {
             const data = response.data
 
             setUserData(data.user)
-             nagivation('/home1')
+             nagivation('/login')
         }
 
-        console.log(userData)
         setEmail('')
         setPassword('')
         setFirstName('')

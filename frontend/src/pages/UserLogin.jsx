@@ -1,21 +1,31 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import {userDateContext} from '../context/UserContext'
+import axios from 'axios'
+
+
 
 const UserLogin = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('') //two way binding - to know react as what we typing 
 
-    const [userDate, setUserDate] = useState({})
+    const {userData, setUserData} = useContext(userDateContext)
 
-    const submitHandler = (e) => {
+    const navigate = useNavigate()
+    const submitHandler = async(e) => {
         e.preventDefault()
-        
 
-        setUserDate({
+        const userloginData={
             email,
             password
-        })
-        console.log(userDate)
+        }
+
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`,userloginData)
+        
+        if(response.ok || response.status === 200){
+            setUserData(response.data.user)
+            navigate('/home1')
+        }
         setEmail('')
         setPassword('')
     }
