@@ -29,6 +29,7 @@ const UserSignUp = () => {
             const data = response.data
 
             setUserData(data.user)
+            localStorage.setItem('token', data.token)
              nagivation('/login')
         }
 

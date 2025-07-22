@@ -6,6 +6,8 @@ import UserSignUp from './pages/UserSignUp'
 import RiderLogin from './pages/RiderLogin'
 import RiderSignUp from './pages/RiderSignUp'
 import Home1 from './pages/Home1'
+import UserProtectedWraper from './pages/UserProtectedWraper'
+import Userlogout from './pages/Userlogout'
 
 function App() {
   return (
@@ -16,7 +18,16 @@ function App() {
         <Route path='/signup' element={<UserSignUp />} />
         <Route path='/riderlogin' element={<RiderLogin />} />
         <Route path='/ridersignup' element={<RiderSignUp />} />
-        <Route path='/home1' element={<Home1 />} />
+        <Route path='/home1' element={
+          <UserProtectedWraper>
+            <Home1 />
+          </UserProtectedWraper>
+        } />
+        <Route path='/logout' element={
+          <UserProtectedWraper>
+            <Userlogout />
+          </UserProtectedWraper>
+        } />
 
       </Routes>
     </>
