@@ -25,7 +25,7 @@ function App() {
           <UserProtectedWraper>
             <Home1 />
           </UserProtectedWraper>
-        } />
+        } />      
         <Route path='/logout' element={
           <UserProtectedWraper>
             <Userlogout />

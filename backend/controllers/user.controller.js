@@ -54,7 +54,7 @@ const loginUser = async (req, res,next) => {
 }
 
 const getUserProfile = async (req, res,next) => {
-    res.status(200).json(req.user);
+    res.status(200).json({user:req.user});
 }
 
 const logoutUser = async (req, res,next) => {
