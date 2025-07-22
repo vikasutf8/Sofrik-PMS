@@ -14,6 +14,7 @@ export const riderDateContext =createContext();
 
 const RiderContext = ({ children }) => {
     const [riderData, setRiderData] = useState({})
+    const [isLoading ,setIsLoading ] = useState(false)
 
     const updateRiderData = (data) => {
         setRiderData(data)
@@ -22,7 +23,9 @@ const RiderContext = ({ children }) => {
     const value={
         riderData,
         setRiderData,
-        updateRiderData
+        updateRiderData,
+        isLoading,
+        setIsLoading
     }
 
   return (

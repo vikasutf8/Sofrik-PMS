@@ -22,7 +22,7 @@ const RiderLogin = () => {
             const data = response.data
             setRiderData(data.rider)
             localStorage.setItem('token', data.token)
-            nagivation('/home1')
+            nagivation('/home2')
         }
 
         setEmail('')

@@ -8,6 +8,8 @@ import RiderSignUp from './pages/RiderSignUp'
 import Home1 from './pages/Home1'
 import UserProtectedWraper from './pages/UserProtectedWraper'
 import Userlogout from './pages/Userlogout'
+import RiderProtectedWraper from './pages/RiderProtectedWraper'
+import Home2 from './pages/Home2'
 
 function App() {
   return (
@@ -28,6 +30,11 @@ function App() {
             <Userlogout />
           </UserProtectedWraper>
         } />
+        <Route path='/home2' element={
+            <RiderProtectedWraper>
+              <Home2 />
+            </RiderProtectedWraper>
+        }/>
 
       </Routes>
     </>
