@@ -10,6 +10,7 @@ import UserProtectedWraper from './pages/UserProtectedWraper'
 import Userlogout from './pages/Userlogout'
 import RiderProtectedWraper from './pages/RiderProtectedWraper'
 import Home2 from './pages/Home2'
+import RiderLogout from './pages/RiderLogout'
 
 function App() {
   return (
@@ -33,6 +34,11 @@ function App() {
         <Route path='/home2' element={
             <RiderProtectedWraper>
               <Home2 />
+            </RiderProtectedWraper>
+        }/>
+         <Route path='/riderlogout' element={
+            <RiderProtectedWraper>
+              <RiderLogout />
             </RiderProtectedWraper>
         }/>
 
