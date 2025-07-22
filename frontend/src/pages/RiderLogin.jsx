@@ -1,21 +1,30 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState,useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { riderDateContext } from '../context/RiderContext'
+import axios from 'axios'
 
 const RiderLogin = () => {
-        const [email, setEmail] = useState('')
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('') //two way binding - to know react as what we typing 
 
-    const [riderDate, setRiderDate] = useState({})
+    const {riderData, setRiderData} = useContext(riderDateContext)
+    const nagivation = useNavigate()
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault()
-        
-
-        setRiderDate({
+        const riderLoginData = {
             email,
             password
-        })
-        console.log(riderDate)
+        }
+        
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/riders/login`,riderLoginData)
+        if(response.ok || response.status === 200){
+            const data = response.data
+            setRiderData(data.rider)
+            localStorage.setItem('token', data.token)
+            nagivation('/home1')
+        }
+
         setEmail('')
         setPassword('')
     }
@@ -39,7 +48,7 @@ const RiderLogin = () => {
             placeholder='password'className='bg-[#eeeeee] rounded-xl py-2 px-4 mb-7 border-2 w-full text-xl  placeholder:text-lg' />
             <button
             className='bg-[#111] text-[#fff] font-medium rounded-xl py-2 px-4 mb-2 w-full text-xl  '>
-                Login
+                Rider Login
             </button>
             
         </form>
