@@ -1,7 +1,7 @@
 const rideModel = require("../models/ride.model.js");
 const {getDistanceTimeService} = require("./maps.service.js");
 const {validationResult} = require("express-validator");
-
+const crypto = require('crypto');
 
 async function getFare(pickup, dropoff) {
     if(pickup === dropoff) {
@@ -40,6 +40,15 @@ async function getFare(pickup, dropoff) {
     return fareCal;
 }
 
+
+async function getOTP(num   ) {
+    function genearateOTP(num) {
+        const otp = crypto.randomInt(Math.pow(10, num-1), Math.pow(10, num)).toString();
+        return otp;
+    }
+    return genearateOTP(num);
+}
+
 module.exports.createRideService = async ({
   user, pickup, dropoff, vehicleType
 }) => {
@@ -54,6 +63,7 @@ module.exports.createRideService = async ({
         dropoff,
         fare: Number(fare[vehicleType].toFixed(2)),
         vehicleType,
+        otp : await getOTP(6)
     });
     return ride;
 }

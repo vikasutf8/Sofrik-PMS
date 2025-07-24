@@ -17,6 +17,7 @@ const Home1 = () => {
   const [confirmeRidePanelOpen, setConfirmeridePanelOpen] = useState(false)
   const [vehicleFound, setVehicleFound] = useState(false)
   const [waitingForDriver,setWaitingForDriver] =useState(false)
+   const [activeInput, setActiveInput] = useState('') 
 
   const panelRef = useRef(null)
   const panelCloseRef = useRef(null)
@@ -150,9 +151,14 @@ const Home1 = () => {
               className='bg-[#eee] px-10 py-2 text-lg rounded-xl w-full mt-3' type="text" placeholder='Enter your dropoff location' />
           </form>
         </div>
-        <div className={` bg-white px-5 `} ref={panelRef}>
-          <LocationSearchPanel setVehiclePanelOpen={setVehiclePanelOpen}
-            setPanelOpen={setPanelOpen} />
+           <div className={`bg-white px-5`} ref={panelRef}>
+          <LocationSearchPanel
+            setVehiclePanelOpen={setVehiclePanelOpen}
+            setPanelOpen={setPanelOpen}
+            searchInput={activeInput === 'pickup' ? pickLocation : dropoffLocation}
+            setLocation={activeInput === 'pickup' ? setPickLocation : setDropoffLocation}
+            isPickup={activeInput === 'pickup'}
+          />
         </div>
       </div>
 
