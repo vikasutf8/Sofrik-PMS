@@ -11,6 +11,7 @@ import Userlogout from './pages/Userlogout'
 import RiderProtectedWraper from './pages/RiderProtectedWraper'
 import Home2 from './pages/Home2'
 import RiderLogout from './pages/RiderLogout'
+import Riding from './pages/Riding'
 
 function App() {
   return (
@@ -19,28 +20,33 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<UserLogin />} />
         <Route path='/signup' element={<UserSignUp />} />
+        <Route path='/riding' element={<Riding />} />
         <Route path='/riderlogin' element={<RiderLogin />} />
         <Route path='/ridersignup' element={<RiderSignUp />} />
         <Route path='/home1' element={
           <UserProtectedWraper>
             <Home1 />
           </UserProtectedWraper>
-        } />      
+        } />
         <Route path='/logout' element={
           <UserProtectedWraper>
             <Userlogout />
           </UserProtectedWraper>
         } />
+
         <Route path='/home2' element={
-            <RiderProtectedWraper>
-              <Home2 />
-            </RiderProtectedWraper>
-        }/>
-         <Route path='/riderlogout' element={
-            <RiderProtectedWraper>
-              <RiderLogout />
-            </RiderProtectedWraper>
-        }/>
+          <RiderProtectedWraper>
+            <Home2 />
+          </RiderProtectedWraper>
+        } />
+        <Route path='/riderlogout' element={
+          <RiderProtectedWraper>
+            <RiderLogout />
+          </RiderProtectedWraper>
+        } />
+
+
+
 
       </Routes>
     </>
