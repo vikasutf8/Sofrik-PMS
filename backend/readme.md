@@ -238,3 +238,95 @@ All authenticated endpoints require a JWT token. Token can be provided in two wa
 - HTTP-only cookies
 - Input validation
 - Email uniqueness validation
+
+## Maps API Endpoints
+
+### 1. Get Coordinates
+**Endpoint:** `GET /maps/getCoordinates`
+
+**Query Parameters:**
+- `address`: String (min 3 characters)
+
+**Auth Required:** Yes
+
+**Success Response (200 OK):**
+```javascript
+{
+  "lat": number,
+  "lng": number
+}
+```
+
+### 2. Get Distance and Time
+**Endpoint:** `GET /maps/getDistanceTime`
+
+**Query Parameters:**
+- `origin`: String (min 3 characters)
+- `destination`: String (min 3 characters)
+
+**Auth Required:** Yes
+
+**Success Response (200 OK):**
+```javascript
+{
+  "distanceTime": {
+    "distance": number,    // Distance in meters
+    "duration": number    // Duration in seconds
+  }
+}
+i.e: 
+{
+    "distanceTime": {
+        "distance": 950886,
+        "duration": 52248
+    }
+}
+```
+
+**Error Responses:**
+
+1. Validation Error (400 Bad Request):
+```javascript
+{
+  "errors": [
+    {
+      "msg": "Origin must be a string and at least 3 characters long",
+      "param": "origin",
+      "location": "query"
+    }
+  ]
+}
+```
+
+2. Maps API Error (500 Internal Server Error):
+```javascript
+{
+  "error": "Error fetching distance and duration from Google Maps API"
+}
+```
+
+## Maps Service Features
+
+### Geocoding
+- Converts addresses to coordinates using GoMaps.pro API
+- Validates address input
+- Returns precise latitude and longitude
+
+### Distance Matrix
+- Calculates distance and travel time between two points
+- Supports address-based queries
+- Returns distance in meters and duration in seconds
+
+### Error Handling
+- Input validation for addresses
+- API response validation
+- Detailed error messages for troubleshooting
+
+### Security
+- Protected routes with authentication
+- API key management through environment variables
+- Query parameter validation
+
+
+
+###IMPORTANT :USING maps.gomaps.pro API ::FREE FREE
