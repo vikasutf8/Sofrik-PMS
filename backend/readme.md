@@ -330,3 +330,48 @@ i.e:
 
 
 ###IMPORTANT :USING maps.gomaps.pro API ::FREE FREE
+
+
+# Ride API Endpoints
+
+### 1. Create Ride
+**Endpoint:** `POST /api/v1/rides/create`
+
+**Request Body:**
+```javascript
+{
+  "pickup": "string",  // Required, min 3 characters
+  "dropoff": "string",  // Required, min 3 characters
+  "vehicleType": "string"  // Required, min 3 characters
+}
+```
+
+**Success Response (201 Created):**
+```javascript
+{
+  "ride": {
+    "user": "string",
+    "pickup": "string",
+    "dropoff": "string",
+    "fare": number,
+    "status": "string",
+    "duration": number,
+    "distance": number,
+    "paymentId": "string",
+    "orderId": "string",
+    "signature": "string"
+  }
+}
+
+{
+    "ride": {
+        "user": "688276aa2487de3bf11be099",
+        "pickup": "IIITDM jabalpur campus",
+        "dropoff": "sardar market,Jabalpur",
+        "fare": 87.2,
+        "status": "pending",
+        "_id": "68828c5fc23d23d998158ecf",
+        "__v": 0
+    }
+}
+```

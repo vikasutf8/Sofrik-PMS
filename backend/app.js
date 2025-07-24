@@ -4,8 +4,8 @@ const cors = require("cors");
 const userRoute = require("./routes/user.route.js");
 const riderRoute = require("./routes/rider.route.js");
 const mapsRoute = require("./routes/maps.route.js");
+const rideRoute =require("./routes/ride.routes.js")
 const cookieParser = require("cookie-parser");
-const connectDB = require("./db/db.config.js");
 const app = express();
 
 app.use(cors());
@@ -22,5 +22,6 @@ app.get("/", (req, res) => {
 app.use("/api/v1/maps",mapsRoute);
 app.use("/api/v1/users",userRoute);
 app.use("/api/v1/riders",riderRoute);
+app.use("/api/v1/rides",rideRoute)
 
 module.exports = app;

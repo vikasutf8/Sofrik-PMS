@@ -42,6 +42,7 @@ module.exports.getDistanceTimeService = async (origin, destination) => {
                 }
                 const distance = data.rows[0].elements[0].distance.text
                 const duration = data.rows[0].elements[0].duration.text
+                console.log(distance,duration)
                 return {
                     distance,
                     duration,
