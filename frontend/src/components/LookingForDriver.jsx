@@ -1,10 +1,10 @@
 import React from 'react'
 
-const ComfirmedRide = ({ setConfirmeridePanelOpen,setVehicleFound }) => {
+const LookingForDriver = ({setVehicleFound}) => {
     return (
         <div >
-            <h5 onClick={() => setConfirmeridePanelOpen(false)} className=' text-center text-2xl'>  <i className="ri-arrow-down-s-line"></i></h5>
-            <h3 className='text-2xl'>Your ride is confirmed</h3>
+            <h5 onClick={() => setVehicleFound(false)} className=' text-center text-2xl'>  <i className="ri-arrow-down-s-line"></i></h5>
+            <h3 className='text-2xl'>Looking For Driver</h3>
             {/* image accroding to vehicel */}
             <div className='flex flex-col justify-between items-center gap-6 mt-5 '>
                 <img
@@ -18,30 +18,24 @@ const ComfirmedRide = ({ setConfirmeridePanelOpen,setVehicleFound }) => {
                             <p className='text-base text-gray-600 -mt-1'>Gurugram, Haryana</p>
                         </div>
                     </div>
-                     <div className='flex items-center gap-6 p-4 border-b-2 '>
+                    <div className='flex items-center gap-6 p-4 border-b-2 '>
                         <i className="text-xl ri-road-map-line"></i>
                         <div>
                             <h3 className='text-lg font-medium'> Sector 7</h3>
                             <p className='text-base text-gray-600 -mt-1'>Gurugram, Haryana</p>
                         </div>
                     </div>
-                     <div className='flex items-center gap-6 p-4 '>
-                      <i className=" text-xl ri-money-rupee-circle-line"></i>
+                    <div className='flex items-center gap-6 p-4 '>
+                        <i class=" text-xl ri-money-rupee-circle-line"></i>
                         <div>
                             <h3 className='text-lg font-medium'> 148.74</h3>
                             <p className='text-base text-gray-600 -mt-1'>Cash | Uber Wallet</p>
                         </div>
                     </div>
                 </div>
-                <button
-                onClick={()=>{setVehicleFound(true)
-                     setConfirmeridePanelOpen(false)}}
-                 className='w-full mt-5 text-lg bg-green-300 font-semibold p-2 rounded-xl'>
-                    Confirm
-                </button>
             </div>
         </div>
     )
 }
 
-export default ComfirmedRide
+export default LookingForDriver
