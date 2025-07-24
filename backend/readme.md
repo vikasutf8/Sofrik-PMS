@@ -305,6 +305,148 @@ i.e:
 }
 ```
 
+### Auto-Suggestion
+- Uses Google Maps API to fetch suggestions for locations
+- Validates input length
+- Returns a list of suggestions
+**Endpoint:** `GET /maps/getSuggestions`
+
+**Query Parameters:**
+  - `input`: String (min 3 characters)
+
+**Auth Required:** Yes
+
+**Success Response (200 OK):**
+
+
+```
+"suggestions":[
+      {
+         "prediction":{
+            "description":"IIITDM Jabalpur, Airport Road, PDPM IIITDM Jabalpur Campus, Khamaria, Jabalpur, Madhya Pradesh, India",
+            "matched_substrings":[
+               {
+                  "length":11,
+                  "offset":0
+               }
+            ],
+            "place_id":"ChIJ0102l0OpgTkRyXgmLIHrml8",
+            "reference":"ChIJ0102l0OpgTkRyXgmLIHrml8",
+            "structured_formatting":{
+               "main_text":"IIITDM Jabalpur",
+               "main_text_matched_substrings":[
+                  {
+                     "length":11,
+                     "offset":0
+                  }
+               ],
+               "secondary_text":"Airport Road, PDPM IIITDM Jabalpur Campus, Khamaria, Jabalpur, Madhya Pradesh, India"
+            },
+            "terms":[
+               {
+                  "offset":0,
+                  "value":"IIITDM Jabalpur"
+               },
+               {
+                  "offset":17,
+                  "value":"Airport Road"
+               },
+               {
+                  "offset":31,
+                  "value":"PDPM IIITDM Jabalpur Campus"
+               },
+               {
+                  "offset":60,
+                  "value":"Khamaria"
+               },
+               {
+                  "offset":70,
+                  "value":"Jabalpur"
+               },
+               {
+                  "offset":80,
+                  "value":"Madhya Pradesh"
+               },
+               {
+                  "offset":96,
+                  "value":"India"
+               }
+            ],
+            "types":[
+               "establishment",
+               "library",
+               "point_of_interest",
+               "university"
+            ]
+         }
+      },
+      {
+         "prediction":{
+            "description":"IIITDM Jabalpur Central Mess, IIITDM Campus Road, PDPM IIITDM Jabalpur Campus, Khamaria, Chakdehi, Jabalpur, Madhya Pradesh, India",
+            "matched_substrings":[
+               {
+                  "length":11,
+                  "offset":0
+               }
+            ],
+            "place_id":"ChIJMUNC50WpgTkRsUfeA-RrSec",
+            "reference":"ChIJMUNC50WpgTkRsUfeA-RrSec",
+            "structured_formatting":{
+               "main_text":"IIITDM Jabalpur Central Mess",
+               "main_text_matched_substrings":[
+                  {
+                     "length":11,
+                     "offset":0
+                  }
+               ],
+               "secondary_text":"IIITDM Campus Road, PDPM IIITDM Jabalpur Campus, Khamaria, Chakdehi, Jabalpur, Madhya Pradesh, India"
+            },
+            "terms":[
+               {
+                  "offset":0,
+                  "value":"IIITDM Jabalpur Central Mess"
+               },
+               {
+                  "offset":30,
+                  "value":"IIITDM Campus Road"
+               },
+               {
+                  "offset":50,
+                  "value":"PDPM IIITDM Jabalpur Campus"
+               },
+               {
+                  "offset":79,
+                  "value":"Khamaria"
+               },
+               {
+                  "offset":89,
+                  "value":"Chakdehi"
+               },
+               {
+                  "offset":99,
+                  "value":"Jabalpur"
+               },
+               {
+                  "offset":109,
+                  "value":"Madhya Pradesh"
+               },
+               {
+                  "offset":125,
+                  "value":"India"
+               }
+            ],
+            "types":[
+               "food",
+               "restaurant",
+               "point_of_interest",
+               "establishment"
+            ]
+         }
+      },
+]
+
+
+```
 ## Maps Service Features
 
 ### Geocoding

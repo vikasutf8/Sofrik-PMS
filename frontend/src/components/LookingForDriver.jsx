@@ -26,7 +26,7 @@ const LookingForDriver = ({setVehicleFound}) => {
                         </div>
                     </div>
                     <div className='flex items-center gap-6 p-4 '>
-                        <i class=" text-xl ri-money-rupee-circle-line"></i>
+                        <i className=" text-xl ri-money-rupee-circle-line"></i>
                         <div>
                             <h3 className='text-lg font-medium'> 148.74</h3>
                             <p className='text-base text-gray-600 -mt-1'>Cash | Uber Wallet</p>

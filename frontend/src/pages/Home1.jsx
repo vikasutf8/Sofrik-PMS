@@ -131,24 +131,41 @@ const Home1 = () => {
             <i className="ri-arrow-down-s-line"></i>
           </h5>
           <h4 className='text-2xl font-semibold'>Find Trip</h4>
-          <form action="" onSubmit={(e) => {
-            SubmitHandler(e)
-          }}>
+             <form onSubmit={(e) => e.preventDefault()}>
             <div className="line absolute h-16 w-1 top-2/5 left-10 bg-black rounded-full"></div>
             <input
-              onClick={() => { setPanelOpen(true) }}
+              onClick={() => {
+                setPanelOpen(true)
+                setActiveInput('pickup')
+              }}
               value={pickLocation}
-              onChange={(e) => {
-                setPickLocation(e.target.value)
-              }}
-              className='bg-[#eee] px-10 py-2 text-lg rounded-xl w-full mt-3' type="text" placeholder='Add a pick location' />
+              onChange={(e) => setPickLocation(e.target.value)}
+              className='bg-[#eee] px-10 py-2 text-lg rounded-xl w-full mt-3'
+              type="text"
+              placeholder='Add a pick location'
+            />
             <input
-              onClick={() => { setPanelOpen(true) }}
-              value={dropoffLocation}
-              onChange={(e) => {
-                setDropoffLocation(e.target.value)
+              onClick={() => {
+                setPanelOpen(true)
+                setActiveInput('dropoff')
               }}
-              className='bg-[#eee] px-10 py-2 text-lg rounded-xl w-full mt-3' type="text" placeholder='Enter your dropoff location' />
+              value={dropoffLocation}
+              onChange={(e) => setDropoffLocation(e.target.value)}
+              className='bg-[#eee] px-10 py-2 text-lg rounded-xl w-full mt-3'
+              type="text"
+              placeholder='Enter your dropoff location'
+            />
+            {pickLocation && dropoffLocation && (
+              <button
+                onClick={() => {
+                  setPanelOpen(false)
+                  setVehiclePanelOpen(true)
+                }}
+                className='w-full bg-black text-white py-3 rounded-xl mt-3 font-semibold'
+              >
+                Select Vehicle
+              </button>
+            )}
           </form>
         </div>
            <div className={`bg-white px-5`} ref={panelRef}>
@@ -161,9 +178,6 @@ const Home1 = () => {
           />
         </div>
       </div>
-
-
-
       {/* after selecting the location */}
       <div ref={vehiclePanelRef} className='fixed w-full z-10 bottom-0 p-5 translate-y-full bg-white  '>
         <VehiclePanel
