@@ -1,49 +1,51 @@
+import React, { useContext, useEffect, useState } from 'react'
 import { riderDateContext } from '../context/RiderContext'
 import { useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { useContext } from 'react'
 import axios from 'axios'
 
-const RiderProtectedWraper = ({children}) => {
-const token =localStorage.getItem('token')
-const {riderData,setRiderData} =useContext(riderDateContext)
-const [isLoading,setIsLoading]=useState(true)
-const nagivation = useNavigate()
-    useEffect(()=>{
-        if(!token){
-            nagivation('/riderlogin')
-        }
-    },[token])
+const RiderProtectedWrapper = ({ children }) => {
+    const navigate = useNavigate()
+    const { riderData, setRiderData } = useContext(riderDateContext)
+    const [isLoading, setIsLoading] = useState(true)
 
-    axios.get(`${import.meta.env.VITE_BASE_URL}/riders/profile`,{
-        headers:{
-            Authorization:`Bearer ${token}`
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        
+        if (!token) {
+            navigate('/riderlogin')
+            return
         }
-    }).then(response=>{
-        if(response.ok || response.status === 200){
-            const data = response.data
-            setRiderData(data.rider)
-            setIsLoading(false)
-        }
-    }).catch(err=>{
-        console.log(err)
-        localStorage.removeItem('token') 
-        nagivation("/riderlogin")
-    })
 
-    if(isLoading){
+        // API call to verify token and get rider data
+        axios.get(`${import.meta.env.VITE_BASE_URL}/riders/profile`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            if (response.status === 200) {
+                setRiderData(response.data.rider)
+                setIsLoading(false)
+            }
+        })
+        .catch(err => {
+            console.log("Authentication error:", err)
+            localStorage.removeItem('token')
+            navigate("/riderlogin")
+        })
+    }, [navigate, setRiderData]) // Remove token from dependencies
+
+    if (isLoading) {
         return (
-            <div>Loading....</div>
+            <div>Loading...</div>
         )
     }
 
-
-
-  return (
-   <>
-    {children}
-   </>
-  )
+    return (
+        <>
+            {children}
+        </>
+    )
 }
 
-export default RiderProtectedWraper
+export default RiderProtectedWrapper

@@ -3,34 +3,41 @@ import { userDateContext } from '../context/UserContext'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
-const UserProtectedWraper = ({ children }) => {
-    const token = localStorage.getItem('token')
+const UserProtectedWrapper = ({ children }) => {
     const navigate = useNavigate()
     const { userData, setUserData } = useContext(userDateContext)
     const [isLoading, setIsLoading] = useState(true)
+
     useEffect(() => {
+        const token = localStorage.getItem('token')
+        
         if (!token) {
             navigate('/login')
+            return
         }
+
+        // API call to verify token and get user data
         axios.get(`${import.meta.env.VITE_BASE_URL}/users/profile`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
-        }).then(response => {
-            if (response.ok || response.status === 200) {
-                setUserData(response.data)
+        })
+        .then(response => {
+            if (response.status === 200) {
+                setUserData(response.data.user) // Note: using response.data.user based on your controller
                 setIsLoading(false)
             }
-        }).catch(err => {
-            console.log("error of message", err.message)
+        })
+        .catch(err => {
+            console.log("Authentication error:", err.message)
             localStorage.removeItem('token')
             navigate("/login")
         })
-    }, [token])
+    }, [navigate, setUserData]) // Remove token from dependencies
 
     if (isLoading) {
         return (
-            <div>Loading....</div>
+            <div>Loading...</div>
         )
     }
 
@@ -41,4 +48,4 @@ const UserProtectedWraper = ({ children }) => {
     )
 }
 
-export default UserProtectedWraper
+export default UserProtectedWrapper
