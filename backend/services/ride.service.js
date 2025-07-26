@@ -67,3 +67,8 @@ module.exports.createRideService = async ({
     });
     return ride;
 }
+
+
+module.exports ={
+    getFare
+}

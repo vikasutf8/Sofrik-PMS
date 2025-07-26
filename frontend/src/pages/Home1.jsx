@@ -2,12 +2,14 @@
 import React, { use, useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
+import axios from 'axios'
 import 'remixicon/fonts/remixicon.css'
 import LocationSearchPanel from '../components/LocationSearchPanel'
 import VehiclePanel from '../components/VehiclePanel'
 import ComfirmedRide from '../components/ComfirmedRide'
 import LookingForDriver from '../components/LookingForDriver'
 import WaitingForDriver from '../components/WaitingForDriver'
+
 
 
 const Home1 = () => {
@@ -17,20 +19,42 @@ const Home1 = () => {
   const [vehiclePanelOpen, setVehiclePanelOpen] = useState(false)
   const [confirmeRidePanelOpen, setConfirmeridePanelOpen] = useState(false)
   const [vehicleFound, setVehicleFound] = useState(false)
-  const [waitingForDriver,setWaitingForDriver] =useState(false)
-   const [activeInput, setActiveInput] = useState('') 
+  const [waitingForDriver, setWaitingForDriver] = useState(false)
+  const [activeInput, setActiveInput] = useState('')
+  const [fare, setFare] = useState({})
 
   const panelRef = useRef(null)
   const panelCloseRef = useRef(null)
   const vehiclePanelRef = useRef(null)
   const confirmeRidePanelRef = useRef(null)
   const vehicleFoundRef = useRef(null)
-  const waitForDriverRef =useRef(null)
+  const waitForDriverRef = useRef(null)
 
   const SubmitHandler = (e) => {
     e.preventDefault()
     console.log("submit")
   }
+
+  const findTrip = async () => {
+    setPanelOpen(false);
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/rides/fare`, {
+        params: {
+          pickup: pickLocation,
+          dropoff: dropoffLocation,
+        },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      console.log(response.data);
+      setFare(response.data.fare);
+      setVehiclePanelOpen(true);
+    } catch (error) {
+      console.error("Failed to fetch fare:", error);
+
+    }
+  };
 
 
 
@@ -132,7 +156,7 @@ const Home1 = () => {
             <i className="ri-arrow-down-s-line"></i>
           </h5>
           <h4 className='text-2xl font-semibold'>Find Trip</h4>
-             <form onSubmit={(e) => e.preventDefault()}>
+          <form onSubmit={(e) => e.preventDefault()}>
             <div className="line absolute h-16 w-1 top-2/5 left-10 bg-black rounded-full"></div>
             <input
               onClick={() => {
@@ -158,10 +182,7 @@ const Home1 = () => {
             />
             {pickLocation && dropoffLocation && (
               <button
-                onClick={() => {
-                  setPanelOpen(false)
-                  setVehiclePanelOpen(true)
-                }}
+                onClick={() => {findTrip()}}
                 className='w-full bg-black text-white py-3 rounded-xl mt-3 font-semibold'
               >
                 Select Vehicle
@@ -169,7 +190,7 @@ const Home1 = () => {
             )}
           </form>
         </div>
-           <div className={`bg-white px-5`} ref={panelRef}>
+        <div className={`bg-white px-5`} ref={panelRef}>
           <LocationSearchPanel
             setVehiclePanelOpen={setVehiclePanelOpen}
             setPanelOpen={setPanelOpen}
@@ -182,6 +203,7 @@ const Home1 = () => {
       {/* after selecting the location */}
       <div ref={vehiclePanelRef} className='fixed w-full z-10 bottom-0 p-5 translate-y-full bg-white  '>
         <VehiclePanel
+         fare={fare}
           setConfirmeridePanelOpen={setConfirmeridePanelOpen}
           setVehiclePanelOpen={setVehiclePanelOpen} />
       </div>
