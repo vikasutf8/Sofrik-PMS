@@ -22,6 +22,7 @@ const Home1 = () => {
   const [waitingForDriver, setWaitingForDriver] = useState(false)
   const [activeInput, setActiveInput] = useState('')
   const [fare, setFare] = useState({})
+  const [vehicleType, setVehicleType] = useState('')
 
   const panelRef = useRef(null)
   const panelCloseRef = useRef(null)
@@ -56,6 +57,18 @@ const Home1 = () => {
     }
   };
 
+  async function createRide(){
+   const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/create`,{
+      vehicleType:vehicleType,
+      pickup:pickLocation,
+      dropoff:dropoffLocation,
+    },{
+      headers:{
+        Authorization:`Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    console.log(response.data)
+  }
 
 
   useGSAP(function () {
@@ -203,21 +216,34 @@ const Home1 = () => {
       {/* after selecting the location */}
       <div ref={vehiclePanelRef} className='fixed w-full z-10 bottom-0 p-5 translate-y-full bg-white  '>
         <VehiclePanel
-         fare={fare}
+          selectVehicle={setVehicleType}
+          fare={fare}
           setConfirmeridePanelOpen={setConfirmeridePanelOpen}
           setVehiclePanelOpen={setVehiclePanelOpen} />
       </div>
 
       {/* after selecting the vehicle */}
       <div ref={confirmeRidePanelRef} className='fixed w-full z-10 bottom-0 p-5 translate-y-full bg-white '>
-        <ComfirmedRide setConfirmeridePanelOpen={setConfirmeridePanelOpen}
-          setVehicleFound={setVehicleFound} />
+        <ComfirmedRide 
+        vehicleType={vehicleType}
+        pickLocation={pickLocation}
+        dropoffLocation={dropoffLocation}
+        createRide={createRide}
+        fare={fare}
+        setConfirmeridePanelOpen={setConfirmeridePanelOpen}
+        setVehicleFound={setVehicleFound} />
       </div>
 
       {/*  */}
 
       <div ref={vehicleFoundRef} className='fixed w-full z-10 bottom-0 p-5 translate-y-full bg-white '>
-        <LookingForDriver setVehicleFound={setVehicleFound} />
+        <LookingForDriver 
+         vehicleType={vehicleType}
+         pickLocation={pickLocation}
+         dropoffLocation={dropoffLocation}
+         createRide={createRide}
+         fare={fare}
+        setVehicleFound={setVehicleFound} />
       </div>
 
 

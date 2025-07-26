@@ -1,6 +1,13 @@
 import React from 'react'
 
-const ComfirmedRide = ({ setConfirmeridePanelOpen,setVehicleFound }) => {
+const ComfirmedRide = ({ setConfirmeridePanelOpen,setVehicleFound ,createRide,vehicleType,pickLocation,dropoffLocation,fare}) => {
+    
+    const [mainPickup,...restPickup]=pickLocation.split(",");
+    const restOfPickLocation=restPickup.join(",").trim();
+
+    const [mainDropoff,...restDropoff]=dropoffLocation.split(",");
+    const restOfDropoffLocation=restDropoff.join(",").trim();
+    
     return (
         <div >
             <h5 onClick={() => setConfirmeridePanelOpen(false)} className=' text-center text-2xl'>  <i className="ri-arrow-down-s-line"></i></h5>
@@ -14,28 +21,29 @@ const ComfirmedRide = ({ setConfirmeridePanelOpen,setVehicleFound }) => {
                     <div className='flex items-center gap-6 p-4 border-b-2 '>
                         <i className="ri-map-pin-fill text-xl"></i>
                         <div>
-                            <h3 className='text-lg font-medium'> Sector 45</h3>
-                            <p className='text-base text-gray-600 -mt-1'>Gurugram, Haryana</p>
+                            <h3 className='text-lg font-medium'> {mainPickup.trim()}</h3>
+                            <p className='text-base text-gray-600 -mt-1'>{restOfPickLocation}</p>
                         </div>
                     </div>
-                     <div className='flex items-center gap-6 p-4 border-b-2 '>
+                     <div className='flex items-center gap-6 p-4 border-b-2 '> 
                         <i className="text-xl ri-road-map-line"></i>
                         <div>
-                            <h3 className='text-lg font-medium'> Sector 7</h3>
-                            <p className='text-base text-gray-600 -mt-1'>Gurugram, Haryana</p>
+                            <h3 className='text-lg font-medium'> {mainDropoff.trim()}</h3>
+                            <p className='text-base text-gray-600 -mt-1'>{restOfDropoffLocation}</p>
                         </div>
                     </div>
                      <div className='flex items-center gap-6 p-4 '>
                       <i className=" text-xl ri-money-rupee-circle-line"></i>
                         <div>
-                            <h3 className='text-lg font-medium'> 148.74</h3>
+                            <h3 className='text-lg font-medium'> {fare[vehicleType]}</h3>
                             <p className='text-base text-gray-600 -mt-1'>Cash | Uber Wallet</p>
                         </div>
                     </div>
                 </div>
                 <button
                 onClick={()=>{setVehicleFound(true)
-                     setConfirmeridePanelOpen(false)}}
+                     setConfirmeridePanelOpen(false)
+                     createRide()}}
                  className='w-full mt-5 text-lg bg-green-300 font-semibold p-2 rounded-xl'>
                     Confirm
                 </button>

@@ -49,7 +49,7 @@ async function getOTP(num   ) {
     return genearateOTP(num);
 }
 
-module.exports.createRideService = async ({
+const createRideService = async ({
   user, pickup, dropoff, vehicleType
 }) => {
     if(!user || !pickup || !dropoff || !vehicleType) {
@@ -70,5 +70,6 @@ module.exports.createRideService = async ({
 
 
 module.exports ={
-    getFare
+    getFare,
+    createRideService
 }
