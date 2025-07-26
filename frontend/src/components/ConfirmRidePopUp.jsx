@@ -1,12 +1,13 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
-const RidePopUp = ({ setRidePopUpPanel,setConfirmRidePopUp }) => {
-    return (
-        <div >
+const ConfirmRidePopUp = ({ setConfirmRidePopUp,setRidePopUpPanel }) => {
+  return (
+    <div className=''>
             <h5
-                onClick={() => setRidePopUpPanel(false)}
+                onClick={() => setConfirmRidePopUp(false)}
                 className=' text-center text-2xl'>  <i className="ri-arrow-down-s-line"></i></h5>
-            <h3 className='text-2xl   pb-2'>New Ride Available</h3>
+            <h3 className='text-2xl   pb-2'>Confirm Ride</h3>
 
             <div className='flex justify-between items-center p-2 bg-amber-200 rounded-2xl  '>
                 <div className='flex justify-start items-center gap-4'>
@@ -43,19 +44,24 @@ const RidePopUp = ({ setRidePopUpPanel,setConfirmRidePopUp }) => {
                         </div>
                     </div>
                 </div>
+                <Link to={"/riderRiding"}
+                    className='w-full text-lg bg-green-300 flex justify-center font-semibold py-2 rounded-xl'>
+                    Confirm
+                </Link>
                 <button
-                    onClick={() => setConfirmRidePopUp(true)}
-                    className='w-full text-lg bg-green-300 font-semibold py-2 rounded-xl'>
-                    Accept
-                </button>
-                <button
-                    onClick={() => setRidePopUpPanel(false)}
-                    className='w-full text-lg bg-gray-300 font-semibold py-2 rounded-xl'>
-                    Ignore
+                    onClick={() => 
+                     {
+                        setConfirmRidePopUp(false)
+                        setRidePopUpPanel(false)
+                     }
+                    }
+
+                    className='w-full text-lg bg-red-300 font-semibold py-2 rounded-xl'>
+                    Cancel
                 </button >
             </div>
         </div>
-    )
+  )
 }
 
-export default RidePopUp
+export default ConfirmRidePopUp

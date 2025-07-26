@@ -12,6 +12,7 @@ import RiderProtectedWraper from './pages/RiderProtectedWraper'
 import Home2 from './pages/Home2'
 import RiderLogout from './pages/RiderLogout'
 import Riding from './pages/Riding'
+import RiderRiding from './pages/RiderRiding'
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path='/riding' element={<Riding />} />
         <Route path='/riderlogin' element={<RiderLogin />} />
         <Route path='/ridersignup' element={<RiderSignUp />} />
+        <Route path='/riderRiding' element={<RiderRiding />} />
         <Route path='/home1' element={
           <UserProtectedWraper>
             <Home1 />
