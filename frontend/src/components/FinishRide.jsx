@@ -1,20 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 
-const ConfirmRidePopUp = ({ setConfirmRidePopUp, setRidePopUpPanel }) => {
+const FinishRide = ({setFinshRidePanel}) => {
 
-    const [OTP, setOTP] = useState('')
-    const submitHandler = (e) => {
-        e.preventDefault()
-        console.log("submit")
-    }
 
-    return (
-        <div className=''>
+  return (
+      <div className=''>
             <h5
-                onClick={() => setConfirmRidePopUp(false)}
+                onClick={() => setFinshRidePanel(false)}
                 className=' text-center text-2xl'>  <i className="ri-arrow-down-s-line"></i></h5>
-            <h3 className='text-2xl   pb-2'>Confirm Ride</h3>
+            <h3 className='text-2xl   pb-2'>Finish Ride</h3>
 
             <div className='flex justify-between items-center p-2 bg-amber-200 rounded-2xl  '>
                 <div className='flex justify-start items-center gap-4'>
@@ -23,7 +18,9 @@ const ConfirmRidePopUp = ({ setConfirmRidePopUp, setRidePopUpPanel }) => {
                         src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1569352630/assets/4b/28f11e-c97b-495a-bac1-171ae9b29362/original/BlackSUV.png" alt="" />
                     <h4 className='text-lg font-medium'>Driver</h4>
                 </div>
-                <h5>4.5 KM</h5>
+                <h5>
+                    Reached At Destination
+                </h5>
             </div>
 
 
@@ -55,34 +52,19 @@ const ConfirmRidePopUp = ({ setConfirmRidePopUp, setRidePopUpPanel }) => {
 
 
 
-                <div className='mt-6  '>
-                    <form onSubmit={(e) => submitHandler(e)}
+              
+                    
 
-                        className='w-full  flex flex-col justify-center items-center gap-3'>
-
-                        <input 
-                        onChange={(e)=>setOTP(e.target.value)}
-                        value={OTP}
-                        type='Number' placeholder='Enter OTP' className='bg-[#eee] px-10 py-2 text-lg rounded-xl w-full my-10 placeholder:text-center text-center'
-                        />
-
-                        <Link to={"/riderRiding"}
+                        <Link to={"/home2"}
                             className='w-full text-lg bg-green-300 flex justify-center font-semibold py-2 rounded-xl'>
-                            Confirm
+                            Finsh
                         </Link>
-                        <button
-                            onClick={() => {
-                                setConfirmRidePopUp(false)
-                                setRidePopUpPanel(false)
-                            }}
-                            className='w-full text-lg bg-red-300 font-semibold py-2 rounded-xl'>
-                            Cancel
-                        </button >
-                    </form>
-                </div>
+                       
+                 
+        
             </div>
         </div>
-    )
+  )
 }
 
-export default ConfirmRidePopUp
+export default FinishRide
