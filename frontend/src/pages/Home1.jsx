@@ -1,5 +1,5 @@
 
-import React, { use, useRef, useState } from 'react'
+import React, { use, useEffect, useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import axios from 'axios'
@@ -9,7 +9,9 @@ import VehiclePanel from '../components/VehiclePanel'
 import ComfirmedRide from '../components/ComfirmedRide'
 import LookingForDriver from '../components/LookingForDriver'
 import WaitingForDriver from '../components/WaitingForDriver'
-
+import { useSocket } from '../context/SocketContext'
+import { userDateContext } from '../context/UserContext'
+import { useContext } from 'react'
 
 
 const Home1 = () => {
@@ -24,6 +26,7 @@ const Home1 = () => {
   const [fare, setFare] = useState({})
   const [vehicleType, setVehicleType] = useState('')
 
+
   const panelRef = useRef(null)
   const panelCloseRef = useRef(null)
   const vehiclePanelRef = useRef(null)
@@ -31,8 +34,18 @@ const Home1 = () => {
   const vehicleFoundRef = useRef(null)
   const waitForDriverRef = useRef(null)
 
+  const { socket } = useSocket();
+
+  const { userData } = useContext(userDateContext);
+
+  useEffect(() => {
+    userData && socket.emit("join",{userId: userData.user._id,userType: "user"})
+    
+  },[userData])
+
+
   const SubmitHandler = (e) => {
-    e.preventDefault()
+    e.preventDefault() 
     console.log("submit")
   }
 
@@ -57,14 +70,14 @@ const Home1 = () => {
     }
   };
 
-  async function createRide(){
-   const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/create`,{
-      vehicleType:vehicleType,
-      pickup:pickLocation,
-      dropoff:dropoffLocation,
-    },{
-      headers:{
-        Authorization:`Bearer ${localStorage.getItem('token')}`
+  async function createRide() {
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/create`, {
+      vehicleType: vehicleType,
+      pickup: pickLocation,
+      dropoff: dropoffLocation,
+    }, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     })
     console.log(response.data)
@@ -195,7 +208,7 @@ const Home1 = () => {
             />
             {pickLocation && dropoffLocation && (
               <button
-                onClick={() => {findTrip()}}
+                onClick={() => { findTrip() }}
                 className='w-full bg-black text-white py-3 rounded-xl mt-3 font-semibold'
               >
                 Select Vehicle
@@ -224,26 +237,26 @@ const Home1 = () => {
 
       {/* after selecting the vehicle */}
       <div ref={confirmeRidePanelRef} className='fixed w-full z-10 bottom-0 p-5 translate-y-full bg-white '>
-        <ComfirmedRide 
-        vehicleType={vehicleType}
-        pickLocation={pickLocation}
-        dropoffLocation={dropoffLocation}
-        createRide={createRide}
-        fare={fare}
-        setConfirmeridePanelOpen={setConfirmeridePanelOpen}
-        setVehicleFound={setVehicleFound} />
+        <ComfirmedRide
+          vehicleType={vehicleType}
+          pickLocation={pickLocation}
+          dropoffLocation={dropoffLocation}
+          createRide={createRide}
+          fare={fare}
+          setConfirmeridePanelOpen={setConfirmeridePanelOpen}
+          setVehicleFound={setVehicleFound} />
       </div>
 
       {/*  */}
 
       <div ref={vehicleFoundRef} className='fixed w-full z-10 bottom-0 p-5 translate-y-full bg-white '>
-        <LookingForDriver 
-         vehicleType={vehicleType}
-         pickLocation={pickLocation}
-         dropoffLocation={dropoffLocation}
-         createRide={createRide}
-         fare={fare}
-        setVehicleFound={setVehicleFound} />
+        <LookingForDriver
+          vehicleType={vehicleType}
+          pickLocation={pickLocation}
+          dropoffLocation={dropoffLocation}
+          createRide={createRide}
+          fare={fare}
+          setVehicleFound={setVehicleFound} />
       </div>
 
 

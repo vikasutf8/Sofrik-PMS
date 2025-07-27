@@ -24,7 +24,8 @@ const UserProtectedWrapper = ({ children }) => {
         })
         .then(response => {
             if (response.status === 200) {
-                setUserData(response.data.user) // Note: using response.data.user based on your controller
+                console.log(response.data)
+                setUserData(response.data) // Note: using response.data.user based on your controller
                 setIsLoading(false)
             }
         })

@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { riderDateContext } from '../context/RiderContext'
 
 const RiderDetails = () => {
+
+    const {riderData}=useContext(riderDateContext);
+
     return (
         <div>  
             <div className='flex justify-between items-center  border-b-2 border-gray-300 mt-4 pb-8'>
@@ -8,11 +12,14 @@ const RiderDetails = () => {
                 <img
                     className=' h-15 w-15 rounded-full object-cover'
                     src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1569352630/assets/4b/28f11e-c97b-495a-bac1-171ae9b29362/original/BlackSUV.png" alt="" />
-                <h4 className='text-lg font-medium'>Driver</h4>
+                <div className='flex flex-col'>
+                <h4 className='text-lg font-medium capitalize'>{riderData.fullname.firstname + " " + riderData.fullname.lastname}</h4>
+                <p className='text-lg text-gray-700 capitalize'>{riderData.vehicle.capacity} Seater {riderData.vehicle.vehicleType}  </p>
+                </div>
             </div>
             <div>
-                <h4 className='text-xl font-medium'>4524.00</h4>
-                <p className='text-md text-gray-700'>Volvo A7</p>
+                <h4 className='text-xl font-medium'>{riderData.vehicle.plate}</h4>
+                <p className='text-lg text-gray-700 capitalize'>{riderData.vehicle.color} Colour</p>
             </div>
         </div>
 
