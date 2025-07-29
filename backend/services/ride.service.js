@@ -2,6 +2,7 @@ const rideModel = require("../models/ride.model.js");
 const {getDistanceTimeService} = require("./maps.service.js");
 const {validationResult} = require("express-validator");
 const crypto = require('crypto');
+const { sendMessageToSocket } = require("../socket.js");
 
 async function getFare(pickup, dropoff) {
     if(pickup === dropoff) {
@@ -80,8 +81,35 @@ const rideService =async({rideId,rider})=>{
     return ride;
 }
 
+const startRideService = async ({rideId,otp,rider}) => {
+    if(!rideId || !otp) {
+        throw new Error("RideId and otp are required");
+    }
+   
+    const ride = await rideModel.findOne({_id :rideId}).populate("user").populate("rider").select("+otp");
+
+    if(!ride){
+        throw new Error("Ride not found");
+    }
+    if(ride.status !== "accepted"){
+        throw new Error("Ride is not accepted");
+    }
+    if(ride.otp !== otp){
+        throw new Error("Invalid OTP");
+    }
+    await rideModel.findOneAndUpdate({_id :rideId},{status:"ongoing"})  //this having an issue
+
+    sendMessageToSocket(ride.user.socketId,{
+      event:"rideStarted",  
+      data: ride
+    })
+
+    return ride;
+}
+
 module.exports ={
     getFare,
     createRideService,
-    rideService
+    rideService,
+    startRideService
 }

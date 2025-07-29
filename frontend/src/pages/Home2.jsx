@@ -144,6 +144,7 @@ const Home2 = () => {
         ref={confirmRidePopUpRef}
         className='fixed w-full h-screen z-10 bottom-0 p-5 translate-y-full  bg-white  '>
         <ConfirmRidePopUp
+        ride ={ride}
           setConfirmRidePopUp={setConfirmRidePopUp}
           setRidePopUpPanel={setRidePopUpPanel} />
       </div>

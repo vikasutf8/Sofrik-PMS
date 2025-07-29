@@ -11,6 +11,7 @@ import LookingForDriver from '../components/LookingForDriver'
 import WaitingForDriver from '../components/WaitingForDriver'
 import { useSocket } from '../context/SocketContext'
 import { userDateContext } from '../context/UserContext'
+import { useNavigate } from 'react-router-dom'
 
 
 
@@ -36,7 +37,9 @@ const [ride,setRide] =useState(null)
 
   const { socket } = useSocket();
 
-  const { userData } = useContext(userDateContext);
+    const { userData } = useContext(userDateContext);
+
+    const navigate = useNavigate()
 
   useEffect(() => {
     userData && socket.emit("join",{userId: userData.user._id,userType: "user"})
@@ -47,6 +50,11 @@ const [ride,setRide] =useState(null)
     setWaitingForDriver(true)
     setVehicleFound(false)
     setRide(ride)
+  })
+
+  socket.on("rideStarted",ride=>{
+    setWaitingForDriver(false)
+    navigate("/riding")
   })
 
 

@@ -84,8 +84,33 @@ const comfirmRide =async (req, res, next)=>{
     res.status(500).json({error: error.message});
   }
 }
+
+const startRide=async (req, res, next)=>{
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  const { rideId,otp } = req.query;
+  try {
+    const ride = await rideService({rideId,otp,rider :req.rider});
+
+    if(ride.otp !== otp){
+      return res.status(400).json({error:"Invalid OTP"});
+    }
+
+    sendMessageToSocket(ride.user.socketId,{
+      event:"rideStarted",  
+      data: ride
+    })
+
+    res.status(200).json({ride});
+  } catch (error) {
+    res.status(500).json({error: error.message});
+  }
+}
 module.exports = {
   createRide,
   countFare,
-  comfirmRide
+  comfirmRide,
+  startRide
 };

@@ -1,12 +1,31 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
-const ConfirmRidePopUp = ({ setConfirmRidePopUp, setRidePopUpPanel }) => {
+const ConfirmRidePopUp = ({ride, setConfirmRidePopUp, setRidePopUpPanel }) => {
 
     const [OTP, setOTP] = useState('')
-    const submitHandler = (e) => {
+
+    const navigate = useNavigate()
+
+    const submitHandler =async (e) => {
         e.preventDefault()
-        console.log("submit")
+
+        const response =await axios.get(`${import.meta.env.VITE_BASE_URL}/rides/startRide`, {
+            params: {
+                rideId: ride._id,
+                otp : OTP
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+          })
+
+          if(response.status ===200){
+            setConfirmRidePopUp(false)
+            setRidePopUpPanel(false)
+            navigate("/riderRiding")
+          }
     }
 
     return (
@@ -21,7 +40,7 @@ const ConfirmRidePopUp = ({ setConfirmRidePopUp, setRidePopUpPanel }) => {
                     <img
                         className=' h-15 w-15 rounded-full object-cover'
                         src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1569352630/assets/4b/28f11e-c97b-495a-bac1-171ae9b29362/original/BlackSUV.png" alt="" />
-                    <h4 className='text-lg font-medium'>Driver</h4>
+                    <h4 className='text-lg font-medium'>{ride?.rider?.fullname.firstname}</h4>
                 </div>
                 <h5>4.5 KM</h5>
             </div>
@@ -32,21 +51,21 @@ const ConfirmRidePopUp = ({ setConfirmRidePopUp, setRidePopUpPanel }) => {
                     <div className='flex items-center gap-6 p-4 border-b-2 '>
                         <i className="ri-map-pin-fill text-xl"></i>
                         <div>
-                            <h3 className='text-lg font-medium'> Sector 45</h3>
-                            <p className='text-base text-gray-600 -mt-1'>Gurugram, Haryana</p>
+                            <h3 className='text-lg font-medium'>Pickup</h3>
+                            <p className='text-base text-gray-600 -mt-1'>{ride?.pickup}</p>
                         </div>
                     </div>
                     <div className='flex items-center gap-6 p-4 border-b-2 '>
                         <i className="text-xl ri-road-map-line"></i>
                         <div>
-                            <h3 className='text-lg font-medium'> Sector 7</h3>
-                            <p className='text-base text-gray-600 -mt-1'>Gurugram, Haryana</p>
+                            <h3 className='text-lg font-medium'>Dropoff</h3>
+                            <p className='text-base text-gray-600 -mt-1'>{ride?.dropoff}</p>
                         </div>
                     </div>
                     <div className='flex items-center gap-6 p-4 '>
                         <i className=" text-xl ri-money-rupee-circle-line"></i>
                         <div>
-                            <h3 className='text-lg font-medium'> 148.74</h3>
+                            <h3 className='text-lg font-medium'>{ride?.fare}</h3>
                             <p className='text-base text-gray-600 -mt-1'>Cash | Uber Wallet</p>
                         </div>
                     </div>
@@ -66,10 +85,9 @@ const ConfirmRidePopUp = ({ setConfirmRidePopUp, setRidePopUpPanel }) => {
                         type='Number' placeholder='Enter OTP' className='bg-[#eee] px-10 py-2 text-lg rounded-xl w-full my-10 placeholder:text-center text-center'
                         />
 
-                        <Link to={"/riderRiding"}
-                            className='w-full text-lg bg-green-300 flex justify-center font-semibold py-2 rounded-xl'>
+                        <button className='w-full text-lg bg-green-300 flex justify-center font-semibold py-2 rounded-xl'>
                             Confirm
-                        </Link>
+                        </button>
                         <button
                             onClick={() => {
                                 setConfirmRidePopUp(false)
