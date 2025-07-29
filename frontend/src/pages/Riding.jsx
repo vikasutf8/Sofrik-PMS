@@ -2,6 +2,7 @@ import React from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import socketContext from '../context/socketContext'
 import { useContext } from 'react'
+import LiveTracking from '../components/LiveTracking'
 
 
 const Riding = () => {
@@ -21,8 +22,7 @@ const Riding = () => {
             <i className=" text-xl font-bold ri-home-smile-line"></i>
         </Link>
         <div className='h-1/2'>
-            <img src='https://toppng.com/uploads/preview/uber-new-logo-2018-11550112725dlrgv5nhdy.png' alt='Uber Logo' className='w-full h-full object-cover' />
-
+         <LiveTracking/>
         </div>
         <div className='h-1/2 p-4'>
 

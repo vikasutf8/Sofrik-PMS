@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import FinishRide from '../components/FinishRide'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
+import LiveTracking from '../components/LiveTracking'
 
 const RiderRiding = () => {
 
@@ -31,7 +32,8 @@ const RiderRiding = () => {
     return (
         <div className='h-screen'>
 
-            <div className='h-4/5 w-screen bg-red-200'>
+            <div className='h-4/5 w-screen '>
+            <LiveTracking />
             </div>
             <div 
             onClick={()=>setFinshRidePanel(true)}
