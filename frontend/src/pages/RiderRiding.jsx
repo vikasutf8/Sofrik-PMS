@@ -49,7 +49,7 @@ const RiderRiding = () => {
             <div
                 ref={FinshRidePanelRef}
                 className='fixed w-full h-screen z-10 bottom-0 p-5 translate-y-full  bg-white  '>
-                    <FinishRide setFinshRidePanel={setFinshRidePanel} rideData={rideData} />
+                    <FinishRide setFinshRidePanel={setFinshRidePanel} ride={rideData} />
             </div>
         </div>
     )

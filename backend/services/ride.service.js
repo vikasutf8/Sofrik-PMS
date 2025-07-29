@@ -107,9 +107,33 @@ const startRideService = async ({rideId,otp,rider}) => {
     return ride;
 }
 
+const endRideService =async ({rideId,rider})=>{
+    if(!rideId) {
+        throw new Error("RideId is required");
+    }
+    
+    const ride = await rideModel.findOne({_id :rideId,rider:rider._id}).populate("user").populate("rider").select("+otp");
+
+    if(!ride){
+        throw new Error("Ride not found");
+    }
+    if(ride.status !== "ongoing"){
+        throw new Error("Ride is not ongoing");
+    }
+    await rideModel.findOneAndUpdate({_id :rideId},{status:"Completed"})  //this having an issue
+
+    sendMessageToSocket(ride.user.socketId,{
+        event:"rideEnded",  
+        data: ride
+      })
+
+    return ride;
+}
+
 module.exports ={
     getFare,
     createRideService,
     rideService,
-    startRideService
+    startRideService,
+    endRideService
 }

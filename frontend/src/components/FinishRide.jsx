@@ -1,9 +1,23 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const FinishRide = ({setFinshRidePanel,ride}) => {
 
-
+ const navigate = useNavigate()
+ const endRidehandler = async() => {
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/end`,{
+        rideId : ride._id
+    },{
+        headers : {
+            Authorization : `Bearer ${localStorage.getItem('token')}`
+        }
+    })
+    if(response.status ===200){
+        setFinshRidePanel(false)
+        navigate('/home2')
+    }
+ }
   return (
       <div className=''>
             <h5
@@ -55,10 +69,10 @@ const FinishRide = ({setFinshRidePanel,ride}) => {
               
                     
 
-                        <Link to={"/home2"}
+                        <button onClick={()=>endRidehandler}
                             className='w-full text-lg bg-green-300 flex justify-center font-semibold py-2 rounded-xl'>
                             Finsh
-                        </Link>
+                        </button>
                        
                  
         

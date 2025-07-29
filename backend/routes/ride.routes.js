@@ -33,4 +33,11 @@ router.get("/startRide",
     startRide
 )    
 
+router.post("endRide",
+    riderAuthMiddleware,
+    body('rideId').isString().isLength({min:3,}).withMessage("RideId must be at least 3 characters long"),
+    endRide
+)
+
+
 module.exports = router;

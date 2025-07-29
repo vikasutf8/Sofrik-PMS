@@ -1,4 +1,4 @@
-const {createRideService, getFare, rideService} = require("../services/ride.service.js");
+const {createRideService, getFare, rideService, endRideService} = require("../services/ride.service.js");
 
 const {validationResult} = require("express-validator");
 const rideModel = require("../models/ride.model.js");
@@ -108,9 +108,32 @@ const startRide=async (req, res, next)=>{
     res.status(500).json({error: error.message});
   }
 }
+
+
+
+const  endRide =async (req, res, next) =>{
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  const { rideId } = req.body;
+  try {
+    const ride = await endRideService({rideId,rider :req.rider});
+
+    sendMessageToSocket(ride.user.socketId,{
+      event:"rideEnded",
+      data: ride
+    }) 
+
+    res.status(200).json({ride});
+  } catch (error) {
+    res.status(500).json({error: error.message});
+  }
+}
 module.exports = {
   createRide,
   countFare,
   comfirmRide,
-  startRide
+  startRide,
+  endRide
 };
