@@ -1,5 +1,7 @@
 const {getAddressCoordinates,getDistanceTimeService, getAddressSuggestions} = require("../services/maps.service.js");
 const {validationResult} = require("express-validator");
+const riderModel = require("../models/rider.model.js");
+
 const getCoordinates = async (req, res, next) => {
 
     const errors = validationResult(req);
@@ -41,6 +43,8 @@ const getSuggestions = async (req, res, next) => {
         res.status(500).json({error: error.message});
     }
 };
+
+
 
 module.exports = {
     getCoordinates,

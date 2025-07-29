@@ -1,5 +1,5 @@
 const axios = require("axios");
-
+const riderModel = require("../models/rider.model.js");
 
 module.exports.getAddressCoordinates = async (address) => {
     const apiKey = process.env.GOOGLE_MAP_API_KEY;
@@ -83,4 +83,22 @@ module.exports.getAddressSuggestions = async (input) => {
     } catch (error) {
         throw new Error('Error fetching suggestions from Google Maps API');
     }
+};
+
+
+module.exports.getRiderInTheRadiusService = async (latitude, longitude, radius) => {
+    if (!latitude || !longitude) {
+        throw new Error('Latitude and longitude are required');
+    }
+    const riders = await riderModel.find({
+        location: {
+            $geoWithin: {
+                $centerSphere: [
+                    [longitude, latitude],
+                    radius / 6371
+                ]
+            }
+        }
+    });
+    return riders;
 };

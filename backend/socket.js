@@ -30,6 +30,27 @@ function socketInit(server){
             }
         })
 
+        socket.on("updateLocationRider",async (data)=>{
+            const {userId, location}=data;
+            const rider = await riderModel.findByIdAndUpdate(userId,{location})
+        })
+
+        socket.on("updateLocationUser",async (data)=>{
+            const {userId, location}=data;
+
+            if(!location || !location.ltd || !location.lng){
+                console.log("Invalid location");
+                return;
+            }   
+            
+            await riderModel.findByIdAndUpdate(userId,{
+                location:{
+                    ltd: location.ltd,
+                    lng: location.lng,
+                }
+            })
+        })
+
         socket.on("disconnect", () => {
             console.log("user disconnected", socket.id);
         })

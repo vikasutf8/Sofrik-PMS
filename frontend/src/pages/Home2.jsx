@@ -20,9 +20,13 @@ const Home2 = () => {
   const { socket } = useSocket();
 
   const { riderData } = useContext(riderDateContext);
-  
+
   useEffect(() => {
     riderData && socket.emit("join", { userId: riderData._id, userType: "rider" })
+
+    setInterval(() => {
+      socket.emit("updateLocationRider", { userId: riderData._id, location: riderData.location })
+    }, 10000)
   }, [riderData])
 
   useGSAP(() => {

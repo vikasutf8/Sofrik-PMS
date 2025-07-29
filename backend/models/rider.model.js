@@ -56,7 +56,7 @@ const riderSchema = new Schema({
         },
         },
     location:{
-        lat:{
+        ltd:{
             type: Number,
         },
         lng:{
