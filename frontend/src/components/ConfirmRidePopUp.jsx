@@ -24,7 +24,7 @@ const ConfirmRidePopUp = ({ride, setConfirmRidePopUp, setRidePopUpPanel }) => {
           if(response.status ===200){
             setConfirmRidePopUp(false)
             setRidePopUpPanel(false)
-            navigate("/riderRiding")
+            navigate("/riderRiding",{state:{ride:ride}})
           }
     }
 

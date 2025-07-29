@@ -54,7 +54,7 @@ const [ride,setRide] =useState(null)
 
   socket.on("rideStarted",ride=>{
     setWaitingForDriver(false)
-    navigate("/riding")
+    navigate("/riding",{state:{ride}})
   })
 
 
