@@ -18,7 +18,6 @@ function socketInit(server){
         console.log("a user connected", socket.id);
 
         socket.on("join",async (data)=>{
-          
             const {userId, userType}=data;
             console.log(`User ${userId} joined as ${userType}`);
             if(userType === "rider"){
@@ -41,7 +40,7 @@ function socketInit(server){
             if(!location || !location.ltd || !location.lng){
                 console.log("Invalid location");
                 return;
-            }   
+            }    
             
             await riderModel.findByIdAndUpdate(userId,{
                 location:{

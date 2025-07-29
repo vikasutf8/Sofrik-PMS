@@ -5,7 +5,7 @@ import gsap from 'gsap'
 import RiderDetails from '../components/RiderDetails'
 import RidePopUp from '../components/RidePopUp'
 import ConfirmRidePopUp from '../components/ConfirmRidePopUp'
-import { useSocket } from '../context/SocketContext'
+import  useSocket  from '../context/SocketContext'
 import { riderDateContext } from '../context/RiderContext'
 
 const Home2 = () => {
@@ -17,8 +17,7 @@ const Home2 = () => {
   const confirmRidePopUpRef = useRef(null)
 
 
-  const { socket } = useSocket();
-
+  const { socket } = useContext(useSocket) 
   const { riderData } = useContext(riderDateContext);
 
   useEffect(() => {

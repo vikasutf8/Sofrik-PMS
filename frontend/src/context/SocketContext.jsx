@@ -20,18 +20,8 @@ export const SocketProvider = ({ children }) => {
             console.log("Disconnected from socket server");
         });
 
-        // return () => {
-        //     socket.disconnect();
-        // };
     }, []);
 
-    // const sendMessage = (eventName, data) => {
-    //     socket.emit(eventName, data);
-    // };
-
-    // const receiveMessage = (eventName, callback) => {
-    //     socket.on(eventName, callback);
-    // };
 
   return (
     <SocketContext.Provider value={{ socket }}>

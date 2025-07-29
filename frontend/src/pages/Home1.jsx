@@ -1,5 +1,5 @@
 
-import React, { use, useEffect, useRef, useState } from 'react'
+import React, { use, useEffect, useRef, useState,useContext } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import axios from 'axios'
@@ -11,7 +11,7 @@ import LookingForDriver from '../components/LookingForDriver'
 import WaitingForDriver from '../components/WaitingForDriver'
 import { useSocket } from '../context/SocketContext'
 import { userDateContext } from '../context/UserContext'
-import { useContext } from 'react'
+
 
 
 const Home1 = () => {
@@ -61,7 +61,6 @@ const Home1 = () => {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       });
-      console.log(response.data);
       setFare(response.data.fare);
       setVehiclePanelOpen(true);
     } catch (error) {
@@ -80,7 +79,6 @@ const Home1 = () => {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     })
-    console.log(response.data)
   }
 
 
