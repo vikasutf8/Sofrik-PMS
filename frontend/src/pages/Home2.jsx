@@ -22,11 +22,40 @@ const Home2 = () => {
 
   useEffect(() => {
     riderData && socket.emit("join", { userId: riderData._id, userType: "rider" })
+// after rider join ->location of rider send to server via websocket and saved in db
+    const updatelocation =()=>{
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(ops =>{
 
-    setInterval(() => {
-      socket.emit("updateLocationRider", { userId: riderData._id, location: riderData.location })
-    }, 10000)
+          console.log({
+            userId: riderData._id,
+            location: {
+              ltd: ops.coords.latitude,
+              lng: ops.coords.longitude
+            }
+          })
+          socket.emit('updateLocationRider',{
+            userId: riderData._id,
+            location: {
+              ltd: ops.coords.latitude,
+              lng: ops.coords.longitude
+            }
+          })
+        })
+      }
+    }
+    const locationInterval =setInterval(updatelocation,10000);
+    updatelocation()
+    // return ()=>{
+    //   clearInterval(locationInterval)
+    // }
   }, [riderData])
+
+
+  socket.on("newRide",(data)=>{
+    console.log(data);
+  })
+
 
   useGSAP(() => {
     if (ridePopUpPanel) {

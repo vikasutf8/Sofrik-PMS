@@ -28,10 +28,19 @@ function socketInit(server){
                 console.log("Invalid user type");
             }
         })
-
+// listen or accepting  co-ordinates of rider and saved in db
         socket.on("updateLocationRider",async (data)=>{
             const {userId, location}=data;
-            const rider = await riderModel.findByIdAndUpdate(userId,{location})
+            if(!location || !location.ltd || !location.lng){
+                console.log("Invalid location");
+                return;
+            }   
+            await riderModel.findByIdAndUpdate(userId,{
+                location:{
+                    ltd: location.ltd,
+                    lng: location.lng,
+                }
+            })
         })
 
         socket.on("updateLocationUser",async (data)=>{
@@ -42,7 +51,7 @@ function socketInit(server){
                 return;
             }    
             
-            await riderModel.findByIdAndUpdate(userId,{
+            await userModel.findByIdAndUpdate(userId,{
                 location:{
                     ltd: location.ltd,
                     lng: location.lng,
@@ -61,9 +70,10 @@ function socketInit(server){
 }
 
 
-function sendMessageToSocket(socketId, message){
+function sendMessageToSocket(socketId, msgObj){
+    console.log(msgObj,"sendMessagetoSocket")
    if(io){
-    io.to(socketId).emit("message", message);
+    io.to(socketId).emit(msgObj.event, msgObj.data);
    }else{
     console.log("Socket is not initialized");       
    }

@@ -2,6 +2,8 @@ const {createRideService, getFare} = require("../services/ride.service.js");
 
 const {validationResult} = require("express-validator");
 const rideModel = require("../models/ride.model.js");
+const { getRiderInTheRadiusService, getAddressCoordinates } = require("../services/maps.service.js");
+const { sendMessageToSocket } = require("../socket.js");
 
 
 const createRide = async (req, res, next) => {
@@ -13,6 +15,35 @@ const createRide = async (req, res, next) => {
   try {
     const ride = await createRideService({user:req.user._id, pickup, dropoff, vehicleType});
     res.status(201).json({ride});
+//user created at ride... How to find no of rider preset at that location
+    const pickupCordinates =await getAddressCoordinates(pickup)
+    console.log(pickupCordinates);
+//  1. getting user location in ltd and lng
+
+// and from backend saved cordinate of riders in db ??find all riders that under in 5km radius
+    const riderRadius = await getRiderInTheRadiusService({
+      ltd: pickupCordinates.ltd,
+      lng: pickupCordinates.lng,
+      radius: 5
+    });
+
+    ride.otp="";
+    console.log(riderRadius);
+
+// to Send full data of user - populate
+const rideWithUser =await rideModel.findOne({_id :ride._id}).populate("user")
+
+
+// after all rider data stored in riderRadius...and now a popup all rider present in radius with newRider event
+    riderRadius.map( rider=>{
+        sendMessageToSocket(rider.socketId,{
+          event:"newRide",
+          data: rideWithUser
+        })
+    })
+
+    
+
   } catch (error) {
     res.status(500).json({error: error.message});
   }

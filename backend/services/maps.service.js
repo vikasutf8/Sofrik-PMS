@@ -86,15 +86,19 @@ module.exports.getAddressSuggestions = async (input) => {
 };
 
 
-module.exports.getRiderInTheRadiusService = async (latitude, longitude, radius) => {
-    if (!latitude || !longitude) {
+
+//Core MongoDb aggragation
+module.exports.getRiderInTheRadiusService = async (ltd, lng, radius) => {
+    if (!ltd || !lng) {
         throw new Error('Latitude and longitude are required');
     }
+
+    //radius in km
     const riders = await riderModel.find({
         location: {
             $geoWithin: {
                 $centerSphere: [
-                    [longitude, latitude],
+                    [lng, ltd],
                     radius / 6371
                 ]
             }
