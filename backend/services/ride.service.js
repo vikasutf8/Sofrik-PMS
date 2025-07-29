@@ -69,7 +69,19 @@ const createRideService = async ({
 }
 
 
+const rideService =async({rideId,rider})=>{
+    if(!rideId) {
+        throw new Error("RideId is required");
+    }
+
+    await rideModel.updateOne({_id :rideId},{status:"accepted",rider :rider})  //this having an issue
+    const ride = await rideModel.findOne({_id :rideId}).populate("user").populate("rider").select("+otp");
+
+    return ride;
+}
+
 module.exports ={
     getFare,
-    createRideService
+    createRideService,
+    rideService
 }

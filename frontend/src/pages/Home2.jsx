@@ -5,27 +5,29 @@ import gsap from 'gsap'
 import RiderDetails from '../components/RiderDetails'
 import RidePopUp from '../components/RidePopUp'
 import ConfirmRidePopUp from '../components/ConfirmRidePopUp'
-import  useSocket  from '../context/SocketContext'
+import useSocket from '../context/SocketContext'
 import { riderDateContext } from '../context/RiderContext'
 
 const Home2 = () => {
 
-  const [ridePopUpPanel, setRidePopUpPanel] = useState(true)
+  const [ridePopUpPanel, setRidePopUpPanel] = useState(false)
   const [confirmRidePopUp, setConfirmRidePopUp] = useState(false)
+  const [ride,setRide] =useState(null)
+  
 
   const ridePopUpPanelRef = useRef(null)
   const confirmRidePopUpRef = useRef(null)
 
 
-  const { socket } = useContext(useSocket) 
+  const { socket } = useContext(useSocket)
   const { riderData } = useContext(riderDateContext);
 
   useEffect(() => {
     riderData && socket.emit("join", { userId: riderData._id, userType: "rider" })
-// after rider join ->location of rider send to server via websocket and saved in db
-    const updatelocation =()=>{
-      if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(ops =>{
+    // after rider join ->location of rider send to server via websocket and saved in db
+    const updatelocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(ops => {
 
           console.log({
             userId: riderData._id,
@@ -34,7 +36,7 @@ const Home2 = () => {
               lng: ops.coords.longitude
             }
           })
-          socket.emit('updateLocationRider',{
+          socket.emit('updateLocationRider', {
             userId: riderData._id,
             location: {
               ltd: ops.coords.latitude,
@@ -44,7 +46,7 @@ const Home2 = () => {
         })
       }
     }
-    const locationInterval =setInterval(updatelocation,10000);
+    const locationInterval = setInterval(updatelocation, 10000);
     updatelocation()
     // return ()=>{
     //   clearInterval(locationInterval)
@@ -52,9 +54,35 @@ const Home2 = () => {
   }, [riderData])
 
 
-  socket.on("newRide",(data)=>{
+  socket.on("newRide", (data) => {
     console.log(data);
+
+    setRide(data)
+    setRidePopUpPanel(true)
   })
+
+
+  const confirmRide = async () => {
+    
+    // socket.emit("comfirmRide",{userId: riderData._id, rideId: ride._id})
+    
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/confirm`, {
+        rideId: ride._id,
+        riderId : riderData._id
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      console.log(response.data);
+      setConfirmRidePopUp(true)
+      setRidePopUpPanel(false)
+    } catch (error) {
+      console.error("Failed to confirm ride:", error);
+    }
+
+  }
 
 
   useGSAP(() => {
@@ -104,14 +132,20 @@ const Home2 = () => {
       <div
         ref={ridePopUpPanelRef}
         className='fixed w-full z-10 bottom-0 p-5 translate-y-full  bg-white  '>
-        <RidePopUp setRidePopUpPanel={setRidePopUpPanel}
-          setConfirmRidePopUp={setConfirmRidePopUp} />
+        <RidePopUp
+        ride={ride}
+          setRidePopUpPanel={setRidePopUpPanel}
+          setConfirmRidePopUp={setConfirmRidePopUp}
+          confirmRide={confirmRide}
+        />
       </div>
 
       <div
         ref={confirmRidePopUpRef}
         className='fixed w-full h-screen z-10 bottom-0 p-5 translate-y-full  bg-white  '>
-        <ConfirmRidePopUp setConfirmRidePopUp={setConfirmRidePopUp} setRidePopUpPanel={setRidePopUpPanel} />
+        <ConfirmRidePopUp
+          setConfirmRidePopUp={setConfirmRidePopUp}
+          setRidePopUpPanel={setRidePopUpPanel} />
       </div>
     </div>
   )

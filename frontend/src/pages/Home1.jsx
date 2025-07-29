@@ -25,7 +25,7 @@ const Home1 = () => {
   const [activeInput, setActiveInput] = useState('')
   const [fare, setFare] = useState({})
   const [vehicleType, setVehicleType] = useState('')
-
+const [ride,setRide] =useState(null)
 
   const panelRef = useRef(null)
   const panelCloseRef = useRef(null)
@@ -42,6 +42,12 @@ const Home1 = () => {
     userData && socket.emit("join",{userId: userData.user._id,userType: "user"})
     
   },[userData])
+
+  socket.on("rideConfirmed",ride=>{
+    setWaitingForDriver(true)
+    setVehicleFound(false)
+    setRide(ride)
+  })
 
 
   const SubmitHandler = (e) => {
@@ -242,7 +248,8 @@ const Home1 = () => {
           createRide={createRide}
           fare={fare}
           setConfirmeridePanelOpen={setConfirmeridePanelOpen}
-          setVehicleFound={setVehicleFound} />
+          setVehicleFound={setVehicleFound} 
+          />
       </div>
 
       {/*  */}
@@ -259,7 +266,9 @@ const Home1 = () => {
 
 
       <div ref={waitForDriverRef} className='fixed w-full z-10 bottom-0 p-5  bg-white '>
-        <WaitingForDriver setWaitingForDriver={setWaitingForDriver} />
+        <WaitingForDriver
+        ride ={ride}
+        setWaitingForDriver={setWaitingForDriver} />
       </div>
     </div>
   )
