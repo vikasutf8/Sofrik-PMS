@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const {body,query} = require("express-validator");
-const {createRide, countFare, comfirmRide, startRide} = require("../controllers/ride.controller.js");
+const {createRide, countFare, comfirmRide, startRide, endRide} = require("../controllers/ride.controller.js");
 const { authMiddleware, riderAuthMiddleware } = require("../middlewares/auth.middlware.js");
 
 router.post("/create",

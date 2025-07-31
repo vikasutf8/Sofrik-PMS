@@ -1,11 +1,11 @@
-import React, { createContext, useContext, useEffect, useRef } from "react";
+import React, { createContext, useEffect } from "react";
 import { io } from "socket.io-client";
 
 const SOCKET_SERVER_URL = "http://localhost:5555";
 
-const SocketContext = createContext();
+export const SocketContext = createContext();
 
-export const useSocket = () => useContext(SocketContext);
+
 
 export const SocketProvider = ({ children }) => {
 

@@ -1,16 +1,17 @@
-import React from 'react'
+import React,{ useContext } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import socketContext from '../context/socketContext'
-import { useContext } from 'react'
 import LiveTracking from '../components/LiveTracking'
+import {SocketContext} from '../context/SocketContext'
 
 
 const Riding = () => {
-    const socket = useContext(socketContext)
+
+
+  const { socket } = useContext(SocketContext)
     const location =useLocation()
     const navigate = useNavigate()
     const rideData =location.state?.ride
-    console.log(rideData)
+    console.log(rideData,"user riding page")
 
     socket.on("rideEnded",()=>{
         navigate("/home1")

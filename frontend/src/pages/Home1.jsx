@@ -9,7 +9,7 @@ import VehiclePanel from '../components/VehiclePanel'
 import ComfirmedRide from '../components/ComfirmedRide'
 import LookingForDriver from '../components/LookingForDriver'
 import WaitingForDriver from '../components/WaitingForDriver'
-import { useSocket } from '../context/SocketContext'
+import {SocketContext} from '../context/SocketContext'
 import { userDateContext } from '../context/UserContext'
 import { useNavigate } from 'react-router-dom'
 
@@ -35,7 +35,7 @@ const [ride,setRide] =useState(null)
   const vehicleFoundRef = useRef(null)
   const waitForDriverRef = useRef(null)
 
-  const { socket } = useSocket();
+  const { socket } = useContext(SocketContext);
 
     const { userData } = useContext(userDateContext);
 
