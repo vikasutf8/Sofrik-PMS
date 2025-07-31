@@ -5,15 +5,15 @@ import gsap from 'gsap'
 import RiderDetails from '../components/RiderDetails'
 import RidePopUp from '../components/RidePopUp'
 import ConfirmRidePopUp from '../components/ConfirmRidePopUp'
-import {SocketContext} from '../context/SocketContext'
+import { SocketContext } from '../context/SocketContext'
 import { riderDateContext } from '../context/RiderContext'
 
 const Home2 = () => {
 
   const [ridePopUpPanel, setRidePopUpPanel] = useState(false)
   const [confirmRidePopUp, setConfirmRidePopUp] = useState(false)
-  const [ride,setRide] =useState(null)
-  
+  const [ride, setRide] = useState(null)
+
 
   const ridePopUpPanelRef = useRef(null)
   const confirmRidePopUpRef = useRef(null)
@@ -23,35 +23,34 @@ const Home2 = () => {
   const { riderData } = useContext(riderDateContext);
 
   useEffect(() => {
+     if (!riderData || !("geolocation" in navigator)) {
+    console.error("Geolocation not available");
+    return;
+  }
     riderData && socket.emit("join", { userId: riderData._id, userType: "rider" })
     // after rider join ->location of rider send to server via websocket and saved in db
     const updatelocation = () => {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(ops => {
-
-          console.log({
-            userId: riderData._id,
-            location: {
-              ltd: ops.coords.latitude,
-              lng: ops.coords.longitude
-            }
+        console.log("navigator", navigator.geolocation)
+          navigator.geolocation.getCurrentPosition(ops => {
+            console.log("location", ops.coords.latitude, ops.coords.longitude)
+            socket.emit('updateLocationRider', {
+              userId: riderData._id,
+              location: {
+                lat: ops.coords.latitude,
+                lng: ops.coords.longitude
+              }
+            })
           })
-          socket.emit('updateLocationRider', {
-            userId: riderData._id,
-            location: {
-              ltd: ops.coords.latitude,
-              lng: ops.coords.longitude
-            }
-          })
-        })
-      }
+        }
     }
+
     const locationInterval = setInterval(updatelocation, 10000);
     updatelocation()
     // return ()=>{
     //   clearInterval(locationInterval)
     // }
-  }, [riderData])
+  }, [])
 
 
   socket.on("newRide", (data) => {
@@ -63,13 +62,13 @@ const Home2 = () => {
 
 
   const confirmRide = async () => {
-    
+
     // socket.emit("comfirmRide",{userId: riderData._id, rideId: ride._id})
-    
+
     try {
       const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/confirm`, {
         rideId: ride._id,
-        riderId : riderData._id
+        riderId: riderData._id
       }, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -133,7 +132,7 @@ const Home2 = () => {
         ref={ridePopUpPanelRef}
         className='fixed w-full z-10 bottom-0 p-5 translate-y-full  bg-white  '>
         <RidePopUp
-        ride={ride}
+          ride={ride}
           setRidePopUpPanel={setRidePopUpPanel}
           setConfirmRidePopUp={setConfirmRidePopUp}
           confirmRide={confirmRide}
@@ -144,7 +143,7 @@ const Home2 = () => {
         ref={confirmRidePopUpRef}
         className='fixed w-full h-screen z-10 bottom-0 p-5 translate-y-full  bg-white  '>
         <ConfirmRidePopUp
-        ride ={ride}
+          ride={ride}
           setConfirmRidePopUp={setConfirmRidePopUp}
           setRidePopUpPanel={setRidePopUpPanel} />
       </div>
