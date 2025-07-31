@@ -7,6 +7,8 @@ const ComfirmedRide = ({ setConfirmeridePanelOpen,setVehicleFound ,createRide,ve
 
     const [mainDropoff,...restDropoff]=dropoffLocation.split(",");
     const restOfDropoffLocation=restDropoff.join(",").trim();
+
+    console.log(createRide,"createRide")
     
     return (
         <div >
@@ -41,7 +43,8 @@ const ComfirmedRide = ({ setConfirmeridePanelOpen,setVehicleFound ,createRide,ve
                     </div>
                 </div>
                 <button
-                onClick={()=>{setVehicleFound(true)
+                onClick={()=>{
+                    setVehicleFound(true)
                      setConfirmeridePanelOpen(false)
                      createRide()}}
                  className='w-full mt-5 text-lg bg-green-300 font-semibold p-2 rounded-xl'>

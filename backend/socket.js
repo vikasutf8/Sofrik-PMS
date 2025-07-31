@@ -31,13 +31,15 @@ function socketInit(server){
 // listen or accepting  co-ordinates of rider and saved in db
         socket.on("updateLocationRider",async (data)=>{
             const {userId, location}=data;
-            if(!location || !location.ltd || !location.lng){
+            console.log(location,"location")
+
+            if(!location || !location.lag || !location.lng){
                 console.log("Invalid location");
                 return;
             }   
             await riderModel.findByIdAndUpdate(userId,{
                 location:{
-                    ltd: location.ltd,
+                    lag: location.lag,
                     lng: location.lng,
                 }
             })
@@ -46,7 +48,7 @@ function socketInit(server){
         socket.on("updateLocationUser",async (data)=>{
             const {userId, location}=data;
 
-            if(!location || !location.ltd || !location.lng){
+            if(!location || !location.lag || !location.lng){
                 console.log("Invalid location");
                 return;
             }    

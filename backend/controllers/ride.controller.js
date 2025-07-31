@@ -17,18 +17,18 @@ const createRide = async (req, res, next) => {
     res.status(201).json({ride});
 //user created at ride... How to find no of rider preset at that location
     const pickupCordinates =await getAddressCoordinates(pickup)
-    console.log(pickupCordinates);
+
 //  1. getting user location in ltd and lng
 
 // and from backend saved cordinate of riders in db ??find all riders that under in 5km radius
     const riderRadius = await getRiderInTheRadiusService({
-      ltd: pickupCordinates.ltd,
+      lat: pickupCordinates.lat,
       lng: pickupCordinates.lng,
       radius: 5
     });
 
     ride.otp="";
-    console.log(riderRadius);
+    console.log(riderRadius,"riderRadius");
 
 // to Send full data of user - populate
 const rideWithUser =await rideModel.findOne({_id :ride._id}).populate("user")
@@ -42,9 +42,15 @@ const rideWithUser =await rideModel.findOne({_id :ride._id}).populate("user")
         })
     })
 
-    
+    console.log(riderRadius.map( rider=>{
+        sendMessageToSocket(rider.socketId,{
+          event:"newRide",
+          data: rideWithUser
+        })
+    }) ,"riderRadius.map( rider=>{")
 
   } catch (error) {
+    console.log(error)
     res.status(500).json({error: error.message});
   }
 };

@@ -7,10 +7,12 @@ module.exports.getAddressCoordinates = async (address) => {
     // https://maps.gomaps.pro/maps/api/geocode/json?key=your api key from gomaps.pro
     try {
         const response = await axios.get(url);
+        console.log(response.data,"response.data")
         if (response.status === 200) {
             const data = response.data;
             if (data.status === 'OK') {
                 const location = data.results[0].geometry.location;
+                console.log(location,"location")
                 return {
                     lat: location.lat,
                     lng: location.lng,
@@ -88,8 +90,8 @@ module.exports.getAddressSuggestions = async (input) => {
 
 
 //Core MongoDb aggragation
-module.exports.getRiderInTheRadiusService = async (ltd, lng, radius) => {
-    if (!ltd || !lng) {
+module.exports.getRiderInTheRadiusService = async ({lat, lng, radius}) => {
+    if (!lat || !lng) {
         throw new Error('Latitude and longitude are required');
     }
 
@@ -98,7 +100,7 @@ module.exports.getRiderInTheRadiusService = async (ltd, lng, radius) => {
         location: {
             $geoWithin: {
                 $centerSphere: [
-                    [lng, ltd],
+                    [lat, lng],
                     radius / 6371
                 ]
             }

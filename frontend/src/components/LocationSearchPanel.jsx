@@ -19,7 +19,6 @@ const LocationSearchPanel = ({ setVehiclePanelOpen, setPanelOpen, searchInput, s
               Authorization: `Bearer ${token}`
             }
           })
-        console.log(response.data.suggestions)
         setSuggestions(response.data.suggestions)
       } catch (error) {
         console.error('Error fetching suggestions:', error)
