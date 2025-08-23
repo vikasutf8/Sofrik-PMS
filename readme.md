@@ -29,3 +29,22 @@
  docker pull mongodb/mongodb-community-server:latest
  docker run -d -p 27017:27017 mongodb/mongodb-community-server:latest
  ```
+
+# Notification Service
+
+### Router
+
+
+## Middleware
+### RabbitMQ 
+-We'll call our message publisher (sender) send.js and our message consumer (receiver) receive.js. The publisher will connect to RabbitMQ, send a single message, then exit.
+
+```bash
+npm install amqplib
+```
+
+- connect to RabbitMQ server :send.js
+```bash
+var amqp = require('amqplib/callback_api');
+amqp.connect('amqp://localhost', function(error0, connection) {});
+```
