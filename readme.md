@@ -17,3 +17,15 @@
  docker pull mongodb/mongodb-community-server:latest
  docker run -d -p 27017:27017 mongodb/mongodb-community-server:latest
 ```
+
+
+# Task Service
+### Router
+-  GET /tasks - Get all tasks
+-  POST /tasks - Create task
+
+### Docker image
+```bash
+ docker pull mongodb/mongodb-community-server:latest
+ docker run -d -p 27017:27017 mongodb/mongodb-community-server:latest
+ ```
