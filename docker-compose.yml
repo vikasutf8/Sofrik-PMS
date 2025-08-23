@@ -1,0 +1,27 @@
+# used to run multiple containers at once
+# volumes are used to persist data
+
+version: '3.8'
+
+services:
+  user-service:
+    build: ./user-service
+    ports:
+      - 8082:8081
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/TmsUsers
+  mongodb:
+    image: mongodb/mongodb-community-server:latest
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data/db:/data/db
+
+
+
+volumes:
+  mongodb-data:
+    
