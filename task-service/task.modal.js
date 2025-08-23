@@ -4,10 +4,7 @@
 const mongoose = require('mongoose');
 
 const taskSchema = new mongoose.Schema({
-    user_id: {
-    type: String,
-    required: true,
-  },
+    
   title: {
     type: String,
     required: true,
@@ -15,9 +12,10 @@ const taskSchema = new mongoose.Schema({
   description: {
     type: String,
     required: true,
-  },
-
-  
+  },user_id: {
+    type: String,
+    required: true,
+  } 
 },{
     timestamps: true
 });
