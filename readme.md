@@ -48,3 +48,9 @@ npm install amqplib
 var amqp = require('amqplib/callback_api');
 amqp.connect('amqp://localhost', function(error0, connection) {});
 ```
+
+### Docker image
+```bash
+ docker pull rabbitmq:3.13.7-management
+ docker run -d -p 5672:5672 -p 15672:15672 rabbitmq:3.13.7-management
+ ```

@@ -22,6 +22,7 @@ services:
     environment:
       - MONGO_URI=mongodb://mongodb:27017/TmsTasks
       - PORT=8083
+      - RABBITMQ_URI=amqp://rabbitmq
   mongodb:
     image: mongodb/mongodb-community-server:latest
     container_name: mongodb
@@ -29,9 +30,20 @@ services:
       - 27017:27017
     volumes:
       - ./data/db:/data/db
+  rabbitmq:
+    image: rabbitmq:3.13.7-management
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./data/rabbitmq:/var/lib/rabbitmq
+    
+
 
 
 
 volumes:
   mongodb-data:
+  rabbitmq-data:
     
